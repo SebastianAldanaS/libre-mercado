@@ -8,7 +8,7 @@ use App\Http\Controllers\ProductController;
 // Usuarios
 Route::group(['prefix' => 'Users', 'controller' => UserController::class], function () {
 
-	Route::get('/GetAllUsers', 'getAllUsers'); //	mostrar todos los usuarios
+	Route::get('/GetAllUsers', 'getAllUsers')->name('users'); //	mostrar todos los usuarios
 	Route::get('/GetAnUser/{user}', 'getAnUser'); // mostrar un usuario por id
 
 	Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser'); // mostrar un usuario por id
@@ -25,7 +25,7 @@ Route::group(['prefix' => 'Users', 'controller' => UserController::class], funct
 // Productos
 Route::group(['prefix' => 'Products', 'controller' => ProductController::class], function () {
 
-	Route::get('/GetAllProducts', 'getAllProducts'); //crear producto
+	Route::get('/GetAllProducts', 'getAllProducts')->name('products');
 
 	Route::post('/CreateProduct', 'createProduct'); //crear producto
 

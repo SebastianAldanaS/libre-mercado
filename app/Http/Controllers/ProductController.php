@@ -21,7 +21,7 @@ class ProductController extends Controller
 
 	public function getAllProducts()
 	{
-		$products = Product::get();
+		$products = Product::with('Seller')->with('Category')->get();
 		return response()->json(['products' => $products], 200);
 	}
 

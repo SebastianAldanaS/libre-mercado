@@ -1,3 +1,5 @@
 <x-app>
-    <products-list />
+    <section class="container">
+        <products-list />
+    </section>
 </x-app>

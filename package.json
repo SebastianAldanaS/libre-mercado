@@ -25,6 +25,7 @@
         "sweetalert2": "^11.7.12",
         "vue": "^3.3.4",
         "vue-axios": "^3.5.2",
-        "vue-router": "^4.2.2"
+        "vue-router": "^4.2.2",
+        "vue-sidebar-menu-akahon": "^1.0.2"
     }
 }
