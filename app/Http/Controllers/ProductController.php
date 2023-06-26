@@ -30,4 +30,17 @@ class ProductController extends Controller
 		$product = new Product($request->all());
 		$product->save();
 	}
+
+	//GetProductsByCategory
+
+	public function getProductsByCategory($categoryId)
+	{
+		$products = Product::where('category_id', $categoryId)
+			->with('Seller')
+			->with('Category')
+			->get();
+
+		return response()->json(['products' => $products], 200);
+	}
+
 }

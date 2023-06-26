@@ -17,8 +17,8 @@
 				<td>{{ user.last_name }}</td>
 				<td>{{ user.email }}</td>
 				<td>{{ user.address }}</td>
-				<td>
-					<button class="btn btn-warning me-2">Editar</button>
+				<td style="display: flex; justify-content: flex-end">
+					<button class="btn btn-warning mx-2">Editar</button>
 					<button class="btn btn-danger">Eliminar</button>
 				</td>
 			</tr>

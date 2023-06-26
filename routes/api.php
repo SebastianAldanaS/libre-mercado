@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\UserController;
@@ -11,7 +12,7 @@ Route::group(['prefix' => 'Users', 'controller' => UserController::class], funct
 	Route::get('/GetAllUsers', 'getAllUsers')->name('users'); //	mostrar todos los usuarios
 	Route::get('/GetAnUser/{user}', 'getAnUser'); // mostrar un usuario por id
 
-	Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser'); // mostrar un usuario por id
+	Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser'); // buscar si usuario tiene carrito
 
 
 	Route::post('/CreateUser', 'createUser'); //crear usuario
@@ -27,7 +28,17 @@ Route::group(['prefix' => 'Products', 'controller' => ProductController::class],
 
 	Route::get('/GetAllProducts', 'getAllProducts')->name('products');
 
+	Route::get('/GetProductsByCategory/{category}', 'getProductsByCategory');
+
+
 	Route::post('/CreateProduct', 'createProduct'); //crear producto
+
+});
+
+// Categories
+Route::group(['prefix' => 'Categories', 'controller' => CategoryController::class], function () {
+
+	Route::get('/GetAllCategories', 'getAllCategories')->name('categories');
 
 });
 
