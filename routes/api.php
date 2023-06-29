@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SellerController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 
 // Usuarios
 Route::group(['prefix' => 'Users', 'controller' => UserController::class], function () {
@@ -12,7 +13,7 @@ Route::group(['prefix' => 'Users', 'controller' => UserController::class], funct
 	Route::get('/GetAllUsers', 'getAllUsers')->name('users'); //	mostrar todos los usuarios
 	Route::get('/GetAnUser/{user}', 'getAnUser'); // mostrar un usuario por id
 
-	Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser'); // buscar si usuario tiene carrito
+	Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser'); // buscar si un usuario tiene carrito
 
 
 	Route::post('/CreateUser', 'createUser'); //crear usuario
@@ -30,15 +31,18 @@ Route::group(['prefix' => 'Products', 'controller' => ProductController::class],
 
 	Route::get('/GetProductsByCategory/{category}', 'getProductsByCategory');
 
-
 	Route::post('/CreateProduct', 'createProduct'); //crear producto
+
+	Route::post('/SaveProduct', 'saveProduct'); //crear producto
+	Route::post('/UpdateProduct', 'updateProduct'); //crear producto
+
 
 });
 
 // Categories
 Route::group(['prefix' => 'Categories', 'controller' => CategoryController::class], function () {
 
-	Route::get('/GetAllCategories', 'getAllCategories')->name('categories');
+	Route::get('/GetAllCategories', 'getAllCategories');
 
 });
 

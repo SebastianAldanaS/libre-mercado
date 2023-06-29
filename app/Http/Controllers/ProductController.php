@@ -43,4 +43,16 @@ class ProductController extends Controller
 		return response()->json(['products' => $products], 200);
 	}
 
+	public function saveProduct(Request $request)
+	{
+		$product = new Product($request->all());
+		$product->save();
+		return response()->json(['product' => $product], 200);
+	}
+
+	public function updateProduct(Request $request)
+	{
+
+	}
+
 }

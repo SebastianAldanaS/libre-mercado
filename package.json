@@ -26,6 +26,7 @@
         "vue": "^3.3.4",
         "vue-axios": "^3.5.2",
         "vue-router": "^4.2.2",
+        "vue-select": "^4.0.0-beta.6",
         "vue-sidebar-menu-akahon": "^1.0.2"
     }
 }
