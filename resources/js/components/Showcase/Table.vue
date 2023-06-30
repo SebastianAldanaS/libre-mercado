@@ -10,12 +10,16 @@
 				>
 					<div class="card-body">
 						<img
-							src="https://http2.mlstatic.com/D_NQ_NP_854874-MCO45857546559_052021-O.jpg"
+							:src="
+								product.image
+									? '/storage/images/' + product.image
+									: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png'
+							"
 							class="card-img-top"
 							alt="Producto"
 						/>
 						<h5 class="card-title">
-							<b> {{ product.name }}</b>
+							<b>{{ product.name }}</b>
 						</h5>
 						<p class="card-text">{{ product.description }}</p>
 						<p v-if="product.stock !== undefined" class="card-text">

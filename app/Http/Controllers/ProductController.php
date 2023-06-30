@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -51,13 +52,17 @@ class ProductController extends Controller
 	public function saveProduct(Request $request)
 	{
 		$product = new Product($request->all());
+		$this->upLoadImages($request, $product);
 		$product->save();
 		return response()->json(['product' => $product->load('Seller', 'Category')], 201);
 	}
 
 	public function updateProduct(Request $request, Product $product)
 	{
-		$product->update($request->all());
+		$requestAll = $request->all();
+		$this->upLoadImages($request, $product);
+		$requestAll['image'] = $product->image;
+		$product->update($requestAll);
 		return response()->json(['product' => $product->refresh()->load('Seller', 'Category')], 201);
 	}
 
@@ -65,6 +70,16 @@ class ProductController extends Controller
 	{
 		$product->delete();
 		return response()->json([], 204);
+	}
+
+	private function upLoadImages($request, &$product)
+	{
+		if (!isset($request->image))
+			return;
+		$random = Str::random(15);
+		$image_name = "{$random}.{$request->image->clientExtension()}";
+		$request->image->move(storage_path('app/public/images'), $image_name);
+		$product->image = $image_name;
 	}
 
 

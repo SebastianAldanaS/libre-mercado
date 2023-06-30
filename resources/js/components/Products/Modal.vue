@@ -14,7 +14,18 @@
 					></button>
 				</div>
 				<div class="modal-body">
-					<form @submit.prevent="storeProduct">
+					<form @submit.prevent="storeProduct" enctype="multipart/form-data">
+						<div class="mb-3">
+							<label for="images" class="form-label">Imagen</label>
+							<input
+								type="file"
+								class="form-control"
+								id="file"
+								accept="image/*"
+								@change="loadImage"
+							/>
+						</div>
+
 						<div class="mb-3">
 							<label for="name" class="form-label">Nombre</label>
 							<input
@@ -106,7 +117,8 @@
 			return {
 				is_create: true,
 				categories: [],
-				product: {}
+				product: {},
+				file: null
 			}
 		},
 		created() {
@@ -122,16 +134,31 @@
 				this.product = { ...this.product_data }
 				this.is_create = false
 			},
+			loadImage(event) {
+				this.file = event.target.files[0]
+			},
+			loadFormData() {
+				const form_data = new FormData()
+				if (this.file) form_data.append('image', this.file, this.file.name)
+				form_data.append('name', this.product.name)
+				form_data.append('description', this.product.description)
+				form_data.append('stock', this.product.stock)
+				form_data.append('price', this.product.price)
+				form_data.append('seller_id', this.product.seller_id)
+				form_data.append('category_id', this.product.category_id)
+				return form_data
+			},
 			async getCategories() {
 				const { data } = await axios.get('Categories/GetAllCategories')
 				this.categories = data.categories
 			},
 			async storeProduct() {
 				try {
+					const product = this.loadFormData()
 					if (this.is_create) {
-						await axios.post('Products/SaveProduct', this.product)
+						await axios.post('Products/SaveProduct', product)
 					} else {
-						await axios.put(`Products/UpdateProduct/${this.product.id}`, this.product)
+						await axios.post(`Products/UpdateProduct/${this.product.id}`, product)
 					}
 					Swal.fire({
 						icon: 'success',

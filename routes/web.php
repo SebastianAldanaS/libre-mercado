@@ -43,7 +43,7 @@ Route::group(['prefix' => 'Products', 'controller' => ProductController::class],
 
 	Route::post('/CreateProduct', 'createProduct'); //crear producto
 	Route::post('/SaveProduct', 'saveProduct'); //guardar producto
-	Route::put('/UpdateProduct/{product}', 'updateProduct'); //actualizar producto
+	Route::post('/UpdateProduct/{product}', 'updateProduct'); //actualizar producto
 	Route::delete('/DeleteAProduct/{product}', 'deleteAProduct'); //actualizar producto
 
 
