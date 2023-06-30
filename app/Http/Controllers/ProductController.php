@@ -25,13 +25,18 @@ class ProductController extends Controller
 		return response()->json(['products' => $products], 200);
 	}
 
+	public function getAProduct(Product $product)
+	{
+		$product->load('Seller', 'Category');
+		return response()->json(['product' => $product], 200);
+	}
+
 	public function createProduct(Request $request)
 	{
 		$product = new Product($request->all());
 		$product->save();
 	}
 
-	//GetProductsByCategory
 
 	public function getProductsByCategory($categoryId)
 	{
@@ -47,12 +52,20 @@ class ProductController extends Controller
 	{
 		$product = new Product($request->all());
 		$product->save();
-		return response()->json(['product' => $product], 200);
+		return response()->json(['product' => $product->load('Seller', 'Category')], 201);
 	}
 
-	public function updateProduct(Request $request)
+	public function updateProduct(Request $request, Product $product)
 	{
-
+		$product->update($request->all());
+		return response()->json(['product' => $product->refresh()->load('Seller', 'Category')], 201);
 	}
+
+	public function deleteAProduct(Product $product)
+	{
+		$product->delete();
+		return response()->json([], 204);
+	}
+
 
 }

@@ -3,8 +3,10 @@
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CarController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -16,10 +18,18 @@ use App\Http\Controllers\Auth\ConfirmPasswordController;
 
 Route::get('/', [ProductController::class, 'showHomeWithProducts'])->name('home');
 
-
+// Usuarios
 Route::group(['prefix' => 'Users', 'controller' => UserController::class], function () {
 	Route::get('/', 'showAllUsers')->name('users');
-	Route::get('/CreateUser', 'showCreateUser')->name('user.create');
+	Route::get('/CreateUser', 'showCreateUser');
+
+	Route::get('/GetAllUsers', 'getAllUsers'); //	mostrar todos los usuarios
+	Route::get('/GetAnUser/{user}', 'getAnUser'); // mostrar un usuario por id
+	Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser'); // buscar si un usuario tiene carrito
+
+
+	Route::put('/UpdateUser/{user}', 'updateUser'); //actulizar usuario
+	Route::delete('/DeleteUser/{user}', 'deleteUser'); //eliminar usuario
 
 });
 
@@ -27,8 +37,32 @@ Route::group(['prefix' => 'Users', 'controller' => UserController::class], funct
 // Productos
 Route::group(['prefix' => 'Products', 'controller' => ProductController::class], function () {
 	Route::get('/', 'showProducts')->name('products');
+	Route::get('/GetAllProducts', 'getAllProducts');
+	Route::get('/GetAProduct/{product}', 'getAProduct');
+	Route::get('/GetProductsByCategory/{category}', 'getProductsByCategory');
+
+	Route::post('/CreateProduct', 'createProduct'); //crear producto
+	Route::post('/SaveProduct', 'saveProduct'); //guardar producto
+	Route::put('/UpdateProduct/{product}', 'updateProduct'); //actualizar producto
+	Route::delete('/DeleteAProduct/{product}', 'deleteAProduct'); //actualizar producto
+
+
 });
 
+
+// Categorias
+Route::group(['prefix' => 'Categories', 'controller' => CategoryController::class], function () {
+
+	Route::get('/GetAllCategories', 'getAllCategories');
+
+});
+
+// Carritos
+Route::group(['prefix' => 'Cars', 'controller' => CarController::class], function () {
+
+	Route::post('/CreateCar', 'createCar'); //crear carrito
+
+});
 
 //------------------------- Auth
 

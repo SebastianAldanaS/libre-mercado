@@ -101,6 +101,7 @@
 	import Swal from 'sweetalert2'
 
 	export default {
+		props: ['product_data'],
 		data() {
 			return {
 				is_create: true,
@@ -114,20 +115,23 @@
 		methods: {
 			index() {
 				this.getCategories()
+				this.setProduct()
+			},
+			setProduct() {
+				if (!this.product_data) return
+				this.product = { ...this.product_data }
+				this.is_create = false
 			},
 			async getCategories() {
-				const { data } = await axios.get('/api/Categories/GetAllCategories')
+				const { data } = await axios.get('Categories/GetAllCategories')
 				this.categories = data.categories
 			},
 			async storeProduct() {
 				try {
 					if (this.is_create) {
-						await axios.post('api/Products/SaveProduct', this.product)
+						await axios.post('Products/SaveProduct', this.product)
 					} else {
-						await axios.put(
-							`api/Products/UpdateProduct/${this.product.id}`,
-							this.product
-						)
+						await axios.put(`Products/UpdateProduct/${this.product.id}`, this.product)
 					}
 					Swal.fire({
 						icon: 'success',

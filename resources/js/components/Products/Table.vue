@@ -18,8 +18,12 @@
 				<td>{{ product.stock }}</td>
 				<td>{{ product.price }}</td>
 				<td>
-					<button class="btn btn-warning me-2">Editar</button>
-					<button class="btn btn-danger">Eliminar</button>
+					<button class="btn btn-warning me-2" @click="getProduct(product.id)">
+						Editar
+					</button>
+					<button class="btn btn-danger" @click="deletProduct(product.id)">
+						Eliminar
+					</button>
 				</td>
 			</tr>
 		</tbody>
@@ -40,6 +44,34 @@
 		methods: {
 			index() {
 				this.products = [...this.products_data]
+			},
+			async getProduct(product_id) {
+				try {
+					const { data } = await axios.get(`Products/GetAProduct/${product_id}`)
+					this.$parent.editProduct(data.product)
+				} catch (error) {
+					console.error(error)
+				}
+			},
+			async deletProduct(product_id) {
+				try {
+					const result = await swal.fire({
+						title: 'Estas seguro de eliminar el producto?',
+						text: 'Esto no puede ser revertido',
+						icon: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						confirmButtonText: 'Si, eliminalo!'
+					})
+
+					if (!result.isConfirmed) return
+					await axios.delete(`Products/DeleteAProduct/${product_id}`)
+					this.$parent.getProducts()
+					swal.fire('Eliminado!', 'El producto fue eliminado', 'success')
+				} catch (error) {
+					console.error(error)
+				}
 			}
 		}
 	}
