@@ -59,7 +59,7 @@ class UserController extends Controller
 
 	}
 
-	public function saveUser(Request $request)
+	public function saveUser(CreateUserRequest $request)
 	{
 		$user = new User($request->all());
 		$user->save();

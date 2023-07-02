@@ -23,10 +23,16 @@
 								id="document_id"
 								v-model="user.document_id"
 							/>
+							<div class="alert alert-danger" v-if="errors && errors.document_id">
+								{{ errors.document_id[0] }}
+							</div>
 						</div>
 						<div class="mb-3">
 							<label for="name" class="form-label">Nombre</label>
 							<input type="text" class="form-control" id="name" v-model="user.name" />
+							<div class="alert alert-danger" v-if="errors && errors.name">
+								{{ errors.name[0] }}
+							</div>
 						</div>
 						<div class="mb-3">
 							<label for="last_name" class="form-label">Apellido</label>
@@ -36,6 +42,9 @@
 								id="last_name"
 								v-model="user.last_name"
 							/>
+							<div class="alert alert-danger" v-if="errors && errors.last_name">
+								{{ errors.last_name[0] }}
+							</div>
 						</div>
 						<div class="mb-3">
 							<label for="email" class="form-label">email</label>
@@ -45,6 +54,9 @@
 								id="email"
 								v-model="user.email"
 							/>
+							<div class="alert alert-danger" v-if="errors && errors.email">
+								{{ errors.email[0] }}
+							</div>
 						</div>
 						<div class="mb-3">
 							<label for="address" class="form-label">Direccion</label>
@@ -54,6 +66,9 @@
 								id="address"
 								v-model="user.address"
 							/>
+							<div class="alert alert-danger" v-if="errors && errors.address">
+								{{ errors.address[0] }}
+							</div>
 						</div>
 						<div class="mb-3">
 							<label for="password" class="form-label">Contraseña</label>
@@ -63,6 +78,9 @@
 								id="password"
 								v-model="user.password"
 							/>
+							<div class="alert alert-danger" v-if="errors && errors.password">
+								{{ errors.password[0] }}
+							</div>
 						</div>
 						<div class="mb-3">
 							<label for="password_confirmation" class="form-label"
@@ -102,7 +120,8 @@
 		data() {
 			return {
 				is_create: true,
-				user: {}
+				user: {},
+				errors: {}
 			}
 		},
 		created() {
@@ -125,11 +144,9 @@
 					this.$parent.closeModal()
 				} catch (error) {
 					console.error(error)
-					Swal.fire({
-						icon: 'error',
-						title: 'Oops...',
-						text: 'Algo salio mal'
-					})
+					if (error.response && error.response.status === 422) {
+						this.errors = error.response.data.errors
+					}
 				}
 			}
 		}

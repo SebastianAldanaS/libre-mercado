@@ -3,8 +3,8 @@
 		<tbody>
 			<section class="d-flex justify-content-center flex-wrap">
 				<div
-					class="card mx-2 my-2"
-					style="width: 16rem"
+					class="card mx-3 my-3"
+					style="width: 18rem"
 					v-for="(product, index) in products"
 					:key="index"
 				>
@@ -49,7 +49,7 @@
 		},
 		methods: {
 			index() {
-				this.products = this.products_data.filter(product => product.stock > 0).slice(0, 4)
+				this.products = this.products_data.filter(product => product.stock > 0)
 			}
 		}
 	}

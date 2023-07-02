@@ -15,19 +15,15 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ConfirmPasswordController;
 
+
 Route::get('/test', function () {
-	/*$users = User::get();
-												 foreach ($users as $user) {
-													 if ($user->document_id == 1112787575) {
-														 $user->assignRole('admin');
 
-													 } else {
-
-														 $user->assignRole('customer');
-													 }
-												 }*/
-	//Role::create(['name' => 'customer']);
 });
+
+Route::get('/crear', function () {
+	return view('users.crear');
+});
+
 
 
 Route::get('/', [ProductController::class, 'showHomeWithProducts'])->name('home');
