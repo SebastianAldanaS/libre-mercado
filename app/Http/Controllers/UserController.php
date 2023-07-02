@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 
@@ -28,6 +29,13 @@ class UserController extends Controller
 	}
 
 
+	public function getAllRoles()
+	{
+		$roles = Role::all()->pluck('name');
+		return response()->json(['roles' => $roles], 200);
+	}
+
+
 
 	public function getAllCarsByUser(User $user)
 	{
@@ -44,11 +52,20 @@ class UserController extends Controller
 
 	public function createUser(CreateUserRequest $request)
 	{
+		$user = new User($request->validated());
 		$user = new User($request->all());
 		$user->save();
 		return response()->json(['request' => $user], 201);
 
 	}
+
+	public function saveUser(Request $request)
+	{
+		$user = new User($request->all());
+		$user->save();
+		return response()->json(['user' => $user], 200);
+	}
+
 
 	public function updateUser(User $user, UpdateUserRequest $request)
 	{

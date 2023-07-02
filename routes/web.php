@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\User;
 use App\Models\Product;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarController;
@@ -13,13 +15,25 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ConfirmPasswordController;
 
+Route::get('/test', function () {
+	/*$users = User::get();
+												 foreach ($users as $user) {
+													 if ($user->document_id == 1112787575) {
+														 $user->assignRole('admin');
 
+													 } else {
+
+														 $user->assignRole('customer');
+													 }
+												 }*/
+	//Role::create(['name' => 'customer']);
+});
 
 
 Route::get('/', [ProductController::class, 'showHomeWithProducts'])->name('home');
 
 // Usuarios
-Route::group(['prefix' => 'Users', 'controller' => UserController::class], function () {
+Route::group(['prefix' => 'Users', 'middleware' => ['auth', 'role:admin'], 'controller' => UserController::class], function () {
 	Route::get('/', 'showAllUsers')->name('users');
 	Route::get('/CreateUser', 'showCreateUser');
 
@@ -27,6 +41,7 @@ Route::group(['prefix' => 'Users', 'controller' => UserController::class], funct
 	Route::get('/GetAnUser/{user}', 'getAnUser'); // mostrar un usuario por id
 	Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser'); // buscar si un usuario tiene carrito
 
+	Route::post('/SaveUser', 'saveUser'); //crear usuario
 
 	Route::put('/UpdateUser/{user}', 'updateUser'); //actulizar usuario
 	Route::delete('/DeleteUser/{user}', 'deleteUser'); //eliminar usuario
@@ -35,17 +50,18 @@ Route::group(['prefix' => 'Users', 'controller' => UserController::class], funct
 
 
 // Productos
-Route::group(['prefix' => 'Products', 'controller' => ProductController::class], function () {
+Route::group(['prefix' => 'Products', 'middleware' => ['auth', 'role:admin'], 'controller' => ProductController::class], function () {
 	Route::get('/', 'showProducts')->name('products');
 	Route::get('/GetAllProducts', 'getAllProducts');
 	Route::get('/GetAProduct/{product}', 'getAProduct');
 	Route::get('/GetProductsByCategory/{category}', 'getProductsByCategory');
 
+
+
 	Route::post('/CreateProduct', 'createProduct'); //crear producto
 	Route::post('/SaveProduct', 'saveProduct'); //guardar producto
 	Route::post('/UpdateProduct/{product}', 'updateProduct'); //actualizar producto
-	Route::delete('/DeleteAProduct/{product}', 'deleteAProduct'); //actualizar producto
-
+	Route::delete('/DeleteAProduct/{product}', 'deleteAProduct'); //Borrar producto
 
 });
 

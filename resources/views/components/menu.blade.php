@@ -49,14 +49,17 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             {{-- Menu Admin --}}
-                            <a class="dropdown-item" href="{{ route('users') }}">
-                                Administrar
-                            </a>
+                            @role('admin')
+                                {{-- Menu Admin --}}
+                                <a class="dropdown-item" href="{{ route('users') }}">
+                                    Administrar
+                                </a>
 
-                            {{-- Productos --}}
-                            <a class="dropdown-item" href="{{ route('products') }}">
-                                Productos
-                            </a>
+                                {{-- Productos --}}
+                                <a class="dropdown-item" href="{{ route('products') }}">
+                                    Productos
+                                </a>
+                            @endrole
 
                             {{-- Logout --}}
                             <a class="dropdown-item" href="{{ route('logout') }}"

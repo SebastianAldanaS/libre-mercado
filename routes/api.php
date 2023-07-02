@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\SellerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 
@@ -15,6 +14,8 @@ Route::group(['prefix' => 'Users', 'controller' => UserController::class], funct
 	Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser'); // buscar si un usuario tiene carrito
 
 	Route::post('/CreateUser', 'createUser'); //crear usuario
+	Route::post('/SaveUser', 'saveUser'); //crear usuario
+
 	Route::put('/UpdateUser/{user}', 'updateUser'); //actulizar usuario
 	Route::delete('/DeleteUser/{user}', 'deleteUser'); //eliminar usuario
 });

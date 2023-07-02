@@ -16,7 +16,6 @@ return new class extends Migration {
 			$table->string('email')->unique();
 			$table->string('address');
 			$table->string('password');
-			//$table->rememberToken();
 			$table->timestamps(); // fecha creacion
 			$table->softDeletes(); // fecha eliminacion
 		});
