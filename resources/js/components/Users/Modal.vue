@@ -16,6 +16,17 @@
 				<div class="modal-body">
 					<form @submit.prevent="storeUser">
 						<div class="mb-3">
+							<label for="role" class="form-label">Roles</label>
+							<select name="role" id="role" v-model="user.role">
+								<option value="">Seleccionar</option>
+								<option v-for="role in roles" :value="role">{{ role }}</option>
+							</select>
+							<div class="alert alert-danger" v-if="errors && errors.role">
+								{{ errors.role[0] }}
+							</div>
+						</div>
+
+						<div class="mb-3">
 							<label for="document_id" class="form-label">Documento</label>
 							<input
 								type="text"
@@ -117,10 +128,12 @@
 	import Swal from 'sweetalert2'
 
 	export default {
+		props: ['user_data'],
 		data() {
 			return {
 				is_create: true,
 				user: {},
+				roles: ['admin', 'customer'],
 				errors: {}
 			}
 		},

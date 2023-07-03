@@ -18,7 +18,7 @@
 				<td>{{ user.email }}</td>
 				<td>{{ user.address }}</td>
 				<td style="display: flex; justify-content: flex-end">
-					<button class="btn btn-warning mx-2">Editar</button>
+					<button class="btn btn-warning mx-2" @click="getUser(user.id)">Editar</button>
 					<button class="btn btn-danger">Eliminar</button>
 				</td>
 			</tr>
@@ -43,6 +43,14 @@
 		methods: {
 			index() {
 				this.users = [...this.users_data]
+			},
+			async getUser(user_id) {
+				try {
+					const { data } = await axios.get(`Users/GetAnUser/${user_id}`)
+					this.$parent.editUser(data.user)
+				} catch (error) {
+					console.error(error)
+				}
 			}
 		}
 	}

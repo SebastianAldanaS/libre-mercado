@@ -31,7 +31,7 @@ Route::get('/', [ProductController::class, 'showHomeWithProducts'])->name('home'
 // Usuarios
 Route::group(['prefix' => 'Users', 'middleware' => ['auth', 'role:admin'], 'controller' => UserController::class], function () {
 	Route::get('/', 'showAllUsers')->name('users');
-	Route::get('/CreateUser', 'showCreateUser');
+	Route::post('/CreateUser', 'showCreateUser');
 
 	Route::get('/GetAllUsers', 'getAllUsers'); //	mostrar todos los usuarios
 	Route::get('/GetAnUser/{user}', 'getAnUser'); // mostrar un usuario por id

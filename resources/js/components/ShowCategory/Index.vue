@@ -1,7 +1,7 @@
 <template>
 	<div class="card my-5 mx-5">
 		<div class="card-header d-flex justify-content-between">
-			<h2>Libros</h2>
+			<h2>{{ selectedCategoryName }}</h2>
 			<div>
 				<v-select
 					:options="categories"
@@ -9,8 +9,12 @@
 					label="name"
 					:clearable="false"
 					style="width: 10rem"
+					v-model="selectedCategoryId"
 				></v-select>
 			</div>
+			<button class="btn btn-primary ms-2 d-flex justify" @click="reloadProducts">
+				Mostrar
+			</button>
 		</div>
 		<div class="card-body">
 			<section class="table-responsive" v-if="load">
@@ -30,12 +34,6 @@
 	import TableComponent from './Table.vue'
 
 	export default {
-		props: {
-			categoryId: {
-				type: Number,
-				required: true
-			}
-		},
 		components: {
 			TableComponent
 		},
@@ -44,11 +42,21 @@
 				products: [],
 				load: false,
 				categories: [],
-				selectedCategoryId: 9
+				selectedCategoryId: 9,
+				selectedCategoryName: ''
 			}
 		},
 		created() {
 			this.index()
+		},
+		watch: {
+			selectedCategoryId: {
+				immediate: true,
+				handler() {
+					this.getProducts()
+					this.setSelectedCategoryName()
+				}
+			}
 		},
 		methods: {
 			async index() {
@@ -59,18 +67,30 @@
 				try {
 					const { data } = await axios.get('/api/Categories/GetAllCategories')
 					this.categories = data.categories
-				} catch (error) {}
+				} catch (error) {
+					console.error(error)
+				}
 			},
 			async getProducts() {
 				try {
 					const { data } = await axios.get(
-						`/api/Products/GetProductsByCategory/${this.categoryId}`
+						`/api/Products/GetProductsByCategory/${this.selectedCategoryId}`
 					)
 					this.products = data.products
 					this.load = true
 				} catch (error) {
 					console.error(error)
 				}
+			},
+			setSelectedCategoryName() {
+				const category = this.categories.find(
+					category => category.id === this.selectedCategoryId
+				)
+				this.selectedCategoryName = category ? category.name : ''
+			},
+			reloadProducts() {
+				this.load = false
+				this.getProducts()
 			}
 		}
 	}

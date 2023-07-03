@@ -19,7 +19,15 @@ class UserController extends Controller
 
 	public function showCreateUser()
 	{
-		return view('users.create-user');
+		$roles = $this->getAllRoles()->original['roles'];
+		return view('users.create-user', compact('roles'));
+	}
+
+	public function showEditUser(User $user)
+	{
+		$roles = $this->getAllRoles()->original['roles'];
+		$user->load('roles');
+		return view('users.edit-user', compact('user', 'roles'));
 	}
 
 	public function getAllUsers()

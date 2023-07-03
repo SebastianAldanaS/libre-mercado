@@ -16,7 +16,7 @@
 			</section>
 		</div>
 		<section v-if="load_modal">
-			<modal />
+			<modal :user_data="user" />
 		</section>
 	</div>
 </template>
@@ -36,20 +36,27 @@
 				users: [],
 				load: false,
 				load_modal: false,
-				modal: null
+				modal: null,
+				user: null
 			}
 		},
 		created() {
 			this.index()
 		},
 		methods: {
-			async index() {
-				await this.getUsers()
+			index() {
+				this.getUsers()
+				this.setUser()
+			},
+			setUser() {
+				if (!this.user_data) return
+				this.user = { ...this.user_data }
+				this.is_create = false
 			},
 			async getUsers() {
 				try {
 					this.load = false
-					const { data } = await axios.get('/api/Users/GetAllUsers')
+					const { data } = await axios.get('Users/GetAllUsers')
 					this.users = data.users
 					this.load = true
 				} catch (error) {
@@ -74,6 +81,10 @@
 			closeModal() {
 				this.modal.hide()
 				this.getUsers()
+			},
+			editUser(user) {
+				this.user = user
+				this.openModal()
 			}
 		}
 	}

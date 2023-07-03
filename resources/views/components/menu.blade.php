@@ -59,11 +59,11 @@
                                 <a class="dropdown-item" href="{{ route('products') }}">
                                     Productos
                                 </a>
-                                {{-- Categorias --}}
-                                <a class="dropdown-item" href="{{ route('categories') }}">
-                                    Categorias
-                                </a>
                             @endrole
+                            {{-- Categorias --}}
+                            <a class="dropdown-item" href="{{ route('categories') }}">
+                                Categorias
+                            </a>
 
                             {{-- Logout --}}
                             <a class="dropdown-item" href="{{ route('logout') }}"
