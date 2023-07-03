@@ -49,7 +49,7 @@
 		},
 		methods: {
 			index() {
-				this.products = this.products_data.filter(product => product.stock > 0).slice(0, 4)
+				this.products = this.products_data.filter(product => product.stock > 0)
 			}
 		}
 	}

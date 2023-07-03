@@ -1,7 +1,7 @@
 <template>
 	<div class="card my-5 mx-5">
 		<div class="card-header d-flex justify-content-between">
-			<h2>Libros</h2>
+			<h2>{{ categoryName }}</h2>
 		</div>
 		<div class="card-body">
 			<section class="table-responsive" v-if="load">
@@ -33,7 +33,8 @@
 		data() {
 			return {
 				products: [],
-				load: false
+				load: false,
+				categoryName: ''
 			}
 		},
 		created() {
@@ -48,7 +49,11 @@
 					const { data } = await axios.get(
 						`/api/Products/GetProductsByCategory/${this.categoryId}`
 					)
-					this.products = data.products
+					const products = data.products.slice(0, 4) // Obtener los primeros 4 productos
+					this.products = products // Almacenar los productos en el array
+					if (products.length > 0) {
+						this.categoryName = products[0].category.name // Obtener el nombre de la categoría del primer producto
+					}
 					this.load = true
 				} catch (error) {
 					console.error(error)

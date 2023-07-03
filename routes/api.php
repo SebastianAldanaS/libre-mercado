@@ -26,11 +26,14 @@ Route::group(['prefix' => 'Products', 'controller' => ProductController::class],
 	Route::get('/', 'showProducts')->name('products');
 	Route::get('/GetAllProducts', 'getAllProducts')->name('products');
 	Route::get('/GetProductsByCategory/{category}', 'getProductsByCategory');
+	Route::get('/GetAProduct/{product}', 'getAProduct');
+
 
 	Route::post('/CreateProduct', 'createProduct'); //crear producto
 	Route::post('/SaveProduct', 'saveProduct'); //guardar producto
 	Route::post('/UpdateProduct', 'updateProduct'); //actualizar producto
 });
+
 
 // Categories
 Route::group(['prefix' => 'Categories', 'controller' => CategoryController::class], function () {

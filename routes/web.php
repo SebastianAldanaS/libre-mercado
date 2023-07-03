@@ -54,13 +54,18 @@ Route::group(['prefix' => 'Products', 'middleware' => ['auth', 'role:admin'], 'c
 
 	Route::get('/GetAProduct/{product}', 'getAProduct');
 	Route::get('/GetProductsByCategory/{category}', 'getProductsByCategory');
-
-
+	Route::get('/GetAProduct/{product}', 'getAProduct');
 
 	Route::post('/CreateProduct', 'createProduct'); //crear producto
 	Route::post('/SaveProduct', 'saveProduct'); //guardar producto
 	Route::post('/UpdateProduct/{product}', 'updateProduct'); //actualizar producto
 	Route::delete('/DeleteAProduct/{product}', 'deleteAProduct'); //Borrar producto
+
+});
+
+// Producto
+Route::group(['prefix' => 'Product', 'controller' => ProductController::class], function () {
+	Route::get('/', 'showProduct')->name('product');
 
 });
 

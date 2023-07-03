@@ -32,7 +32,7 @@
                 @guest
                     @if (Route::has('login'))
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">Login</a>
+                            <a class="nav-link" href="{{ route('login') }}">Entrar</a>
                         </li>
                     @endif
 
@@ -63,6 +63,10 @@
                             {{-- Categorias --}}
                             <a class="dropdown-item" href="{{ route('categories') }}">
                                 Categorias
+                            </a>
+
+                            <a class="dropdown-item" href="{{ route('product') }}">
+                                Producto
                             </a>
 
                             {{-- Logout --}}

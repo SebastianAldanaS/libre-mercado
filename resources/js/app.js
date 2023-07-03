@@ -7,13 +7,15 @@ import ProductsList from './components/Products/Index.vue'
 import UsersList from './components/Users/Index.vue'
 import ShowcaseComponent from './components/Showcase/Index.vue'
 import ShowCategoryComponent from './components/ShowCategory/Index.vue'
+import ProductDetail from './components/ProductDetail/index.vue'
 
 const app = createApp({
 	components: {
 		ProductsList,
 		UsersList,
 		ShowcaseComponent,
-		ShowCategoryComponent
+		ShowCategoryComponent,
+		ProductDetail
 	}
 })
 

@@ -15,6 +15,11 @@ class ProductController extends Controller
 		return view('products.index');
 	}
 
+	public function showProduct()
+	{
+		return view('product.index');
+	}
+
 	public function showHomeWithProducts()
 	{
 		$products = $this->getAllProducts()->original['products'];
