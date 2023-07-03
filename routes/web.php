@@ -49,6 +49,9 @@ Route::group(['prefix' => 'Users', 'middleware' => ['auth', 'role:admin'], 'cont
 Route::group(['prefix' => 'Products', 'middleware' => ['auth', 'role:admin'], 'controller' => ProductController::class], function () {
 	Route::get('/', 'showProducts')->name('products');
 	Route::get('/GetAllProducts', 'getAllProducts');
+
+	Route::get('/GetAllProductsDataTable', 'getAllProductsForDataTable');
+
 	Route::get('/GetAProduct/{product}', 'getAProduct');
 	Route::get('/GetProductsByCategory/{category}', 'getProductsByCategory');
 
@@ -65,6 +68,7 @@ Route::group(['prefix' => 'Products', 'middleware' => ['auth', 'role:admin'], 'c
 // Categorias
 Route::group(['prefix' => 'Categories', 'controller' => CategoryController::class], function () {
 
+	Route::get('/', 'showCategories')->name('categories');
 	Route::get('/GetAllCategories', 'getAllCategories');
 
 });
@@ -75,6 +79,8 @@ Route::group(['prefix' => 'Cars', 'controller' => CarController::class], functio
 	Route::post('/CreateCar', 'createCar'); //crear carrito
 
 });
+
+
 
 //------------------------- Auth
 

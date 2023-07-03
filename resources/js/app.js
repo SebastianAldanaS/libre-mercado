@@ -6,12 +6,14 @@ import vSelect from 'vue-select'
 import ProductsList from './components/Products/Index.vue'
 import UsersList from './components/Users/Index.vue'
 import ShowcaseComponent from './components/Showcase/Index.vue'
+import ShowCategoryComponent from './components/ShowCategory/Index.vue'
 
 const app = createApp({
 	components: {
 		ProductsList,
 		UsersList,
-		ShowcaseComponent
+		ShowcaseComponent,
+		ShowCategoryComponent
 	}
 })
 

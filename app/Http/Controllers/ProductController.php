@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
@@ -24,6 +25,28 @@ class ProductController extends Controller
 	{
 		$products = Product::with('Seller')->with('Category')->get();
 		return response()->json(['products' => $products], 200);
+	}
+
+	public function getAllProductsForDataTable()
+	{
+		$products = Product::with('Seller')->with('Category');
+
+		return DataTables::of($products)->addColumn('action', function ($row) {
+			return "<a
+			href='#'
+			onclick='event.preventDefault();'
+			data-id='{$row->id}'
+			role='edit'
+			class='btn btn-warning btn-sm'>Editar</a>
+			<a
+			href='#'
+			onclick='event.preventDefault();'
+			data-id='{$row->id}'
+			role='delete'
+			class='btn btn-danger btn-sm'>Eliminar</a>";
+		})
+			->rawColumns(['action'])
+			->make();
 	}
 
 	public function getAProduct(Product $product)

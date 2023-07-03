@@ -2,6 +2,15 @@
 	<div class="card my-5 mx-5">
 		<div class="card-header d-flex justify-content-between">
 			<h2>Libros</h2>
+			<div>
+				<v-select
+					:options="categories"
+					:reduce="category => category.id"
+					label="name"
+					:clearable="false"
+					style="width: 10rem"
+				></v-select>
+			</div>
 		</div>
 		<div class="card-body">
 			<section class="table-responsive" v-if="load">
@@ -33,7 +42,9 @@
 		data() {
 			return {
 				products: [],
-				load: false
+				load: false,
+				categories: [],
+				selectedCategoryId: 9
 			}
 		},
 		created() {
@@ -41,7 +52,14 @@
 		},
 		methods: {
 			async index() {
+				await this.getCategories()
 				await this.getProducts()
+			},
+			async getCategories() {
+				try {
+					const { data } = await axios.get('/api/Categories/GetAllCategories')
+					this.categories = data.categories
+				} catch (error) {}
 			},
 			async getProducts() {
 				try {

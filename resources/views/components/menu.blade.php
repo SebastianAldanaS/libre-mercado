@@ -52,12 +52,16 @@
                             @role('admin')
                                 {{-- Menu Admin --}}
                                 <a class="dropdown-item" href="{{ route('users') }}">
-                                    Administrar
+                                    Usuarios
                                 </a>
 
                                 {{-- Productos --}}
                                 <a class="dropdown-item" href="{{ route('products') }}">
                                     Productos
+                                </a>
+                                {{-- Categorias --}}
+                                <a class="dropdown-item" href="{{ route('categories') }}">
+                                    Categorias
                                 </a>
                             @endrole
 
