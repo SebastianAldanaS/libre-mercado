@@ -19,7 +19,7 @@
 				<td>{{ user.address }}</td>
 				<td style="display: flex; justify-content: flex-end">
 					<button class="btn btn-warning mx-2" @click="getUser(user.id)">Editar</button>
-					<button class="btn btn-danger">Eliminar</button>
+					<button class="btn btn-danger" @click="handleDeleteUser(user)">Eliminar</button>
 				</td>
 			</tr>
 		</tbody>
@@ -27,8 +27,11 @@
 </template>
 
 <script>
+	import axios from 'axios'
+	import Swal from 'sweetalert2'
+
 	export default {
-		props: ['users_data'],
+		props: ['users_data', 'handleDeleteUser'],
 		data() {
 			return {
 				users: []
@@ -48,6 +51,18 @@
 				try {
 					const { data } = await axios.get(`Users/GetAnUser/${user_id}`)
 					this.$parent.editUser(data.user)
+				} catch (error) {
+					console.error(error)
+				}
+			},
+			async deleteUser(user) {
+				try {
+					await this.handleDeleteUser(user) // Llama a la función handleDeleteUser pasada como prop
+					Swal.fire({
+						icon: 'success',
+						title: 'Felicidades',
+						text: 'Usuario Eliminado'
+					})
 				} catch (error) {
 					console.error(error)
 				}

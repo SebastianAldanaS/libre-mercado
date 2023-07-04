@@ -1,5 +1,6 @@
 import './bootstrap'
 import { createApp } from 'vue'
+
 import vSelect from 'vue-select'
 
 //Components

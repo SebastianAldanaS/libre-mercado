@@ -3,9 +3,7 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">
-						{{ `${is_create ? 'Crear' : 'Actualizar'} Usuario` }}
-					</h5>
+					<h5 class="modal-title" id="exampleModalLabel">Registrarse</h5>
 					<button
 						type="button"
 						class="btn-close"
@@ -125,7 +123,6 @@
 </template>
 
 <script>
-	import axios from 'axios'
 	import Swal from 'sweetalert2'
 
 	export default {
@@ -134,11 +131,15 @@
 			return {
 				is_create: true,
 				user: {},
-				roles: ['admin', 'customer'],
+				roles: ['customer'],
 				errors: {}
 			}
 		},
+		created() {
+			this.index()
+		},
 		methods: {
+			index() {},
 			async storeUser() {
 				try {
 					if (this.is_create) {
@@ -151,7 +152,6 @@
 						title: 'Felicidades',
 						text: 'Usuario Creado'
 					})
-					this.$parent.closeModal()
 				} catch (error) {
 					console.error(error)
 					if (error.response && error.response.status === 422) {

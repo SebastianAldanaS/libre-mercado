@@ -27,7 +27,13 @@
 						</p>
 						<p>Precio: ${{ product.price }}</p>
 						<td>
-							<a href="#" class="btn btn-primary">Añadir a Carrito</a>
+							<a
+								href="#"
+								class="btn btn-warning"
+								@click="redirectToProduct(product.id)"
+							>
+								Más detalles
+							</a>
 						</td>
 					</div>
 				</div>
@@ -50,6 +56,9 @@
 		methods: {
 			index() {
 				this.products = this.products_data.filter(product => product.stock > 0)
+			},
+			redirectToProduct(productId) {
+				window.location.href = `/Product`
 			}
 		}
 	}

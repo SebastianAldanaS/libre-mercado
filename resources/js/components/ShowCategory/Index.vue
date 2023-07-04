@@ -42,7 +42,7 @@
 				products: [],
 				load: false,
 				categories: [],
-				selectedCategoryId: 9,
+				selectedCategoryId: 1,
 				selectedCategoryName: ''
 			}
 		},

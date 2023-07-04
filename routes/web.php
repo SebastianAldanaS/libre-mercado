@@ -40,7 +40,7 @@ Route::group(['prefix' => 'Users', 'middleware' => ['auth', 'role:admin'], 'cont
 	Route::post('/SaveUser', 'saveUser'); //crear usuario
 
 	Route::put('/UpdateUser/{user}', 'updateUser'); //actulizar usuario
-	Route::delete('/DeleteUser/{user}', 'deleteUser'); //eliminar usuario
+	Route::delete('/DeleteAUser/{user}', 'deleteUser'); //eliminar usuario
 
 });
 

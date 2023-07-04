@@ -6,7 +6,7 @@
 		</div>
 		<div class="card-body">
 			<section class="table-responsive" v-if="load">
-				<table-component :users_data="users" />
+				<TableComponent :users_data="users" :handleDeleteUser="deleteUser" />
 			</section>
 			<!--Load-->
 			<section v-else class="d-flex justify-content-center my-3">
@@ -26,7 +26,6 @@
 	import Modal from './Modal.vue'
 
 	export default {
-		props: [],
 		components: {
 			TableComponent,
 			Modal
@@ -85,6 +84,44 @@
 			editUser(user) {
 				this.user = user
 				this.openModal()
+			},
+			async deleteUser(user) {
+				try {
+					await this.handleDeleteUser(user) // Llama a la función handleDeleteUser del componente padre
+					swal.fire({
+						icon: 'success',
+						title: 'Felicidades',
+						text: 'Usuario Eliminado'
+					})
+				} catch (error) {
+					console.error(error)
+				}
+			},
+			handleDeleteUser(user) {
+				// Hacer la petición para eliminar el usuario
+				axios
+					.delete(`Users/DeleteAUser/${user.id}`)
+					.then(response => {
+						// Usuario eliminado correctamente
+						// Realizar las acciones necesarias después de eliminar el usuario
+						swal.fire({
+							icon: 'success',
+							title: 'Usuario eliminado',
+							text: 'El usuario ha sido eliminado correctamente.'
+						})
+
+						// Actualizar la lista de usuarios
+						this.getUsers()
+					})
+					.catch(error => {
+						// Error al eliminar el usuario
+						console.error(error)
+						swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: 'Ha ocurrido un error al eliminar el usuario.'
+						})
+					})
 			}
 		}
 	}

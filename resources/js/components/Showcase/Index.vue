@@ -2,12 +2,15 @@
 	<div class="card my-5 mx-5">
 		<div class="card-header d-flex justify-content-between">
 			<h2>{{ categoryName }}</h2>
+			<button class="btn btn-primary" @click="redirectToProductPage">
+				Ver más Categorias
+			</button>
 		</div>
 		<div class="card-body">
 			<section class="table-responsive" v-if="load">
 				<table-component :products_data="products" />
 			</section>
-			<!--Load-->
+
 			<section v-else class="d-flex justify-content-center my-3">
 				<div class="spinner-border text-primary" role="status">
 					<span class="visually-hidden">Loading...</span>
@@ -58,6 +61,9 @@
 				} catch (error) {
 					console.error(error)
 				}
+			},
+			redirectToProductPage() {
+				window.location.href = 'http://localhost:8020/Categories'
 			}
 		}
 	}
