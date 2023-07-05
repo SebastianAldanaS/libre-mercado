@@ -1,0 +1,45 @@
+<template>
+	<div class="modal fade" id="category_modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">
+						{{ `${is_create ? 'Crear' : 'Actualizar'} Categoria` }}
+					</h5>
+					<button
+						type="button"
+						class="btn-close"
+						data-bs-dismiss="modal"
+						aria-label="Close"
+					></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="mb-3">
+							<label for="name" class="form-label">Nombre</label>
+							<input type="text" class="form-control" id="name" />
+						</div>
+
+						<button type="submit" class="btn btn-primary">Submit</button>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+						Close
+					</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>
+
+<script>
+	export default {
+		data() {
+			return {
+				is_create: false
+			}
+		}
+	}
+</script>

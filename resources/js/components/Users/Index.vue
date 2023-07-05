@@ -6,7 +6,7 @@
 		</div>
 		<div class="card-body">
 			<section class="table-responsive" v-if="load">
-				<TableComponent :users_data="users" :handleDeleteUser="deleteUser" />
+				<TableComponent :users_data="users" :handleDeleteUser="confirmDeleteUser" />
 			</section>
 			<!--Load-->
 			<section v-else class="d-flex justify-content-center my-3">
@@ -16,7 +16,7 @@
 			</section>
 		</div>
 		<section v-if="load_modal">
-			<modal :user_data="user" />
+			<Modal :user_data="user" />
 		</section>
 	</div>
 </template>
@@ -77,7 +77,7 @@
 					})
 				}, 200)
 			},
-			closeModal() {
+			closeUserModal() {
 				this.modal.hide()
 				this.getUsers()
 			},
@@ -85,13 +85,29 @@
 				this.user = user
 				this.openModal()
 			},
+			confirmDeleteUser(user) {
+				swal.fire({
+					title: '¿Estás seguro?',
+					text: 'Esta acción eliminará el usuario de forma permanente',
+					icon: 'warning',
+					showCancelButton: true,
+					confirmButtonColor: '#3085d6',
+					cancelButtonColor: '#d33',
+					confirmButtonText: 'Sí, eliminar',
+					cancelButtonText: 'Cancelar'
+				}).then(result => {
+					if (result.isConfirmed) {
+						this.deleteUser(user)
+					}
+				})
+			},
 			async deleteUser(user) {
 				try {
 					await this.handleDeleteUser(user) // Llama a la función handleDeleteUser del componente padre
 					swal.fire({
 						icon: 'success',
-						title: 'Felicidades',
-						text: 'Usuario Eliminado'
+						title: 'Usuario eliminado',
+						text: 'El usuario ha sido eliminado correctamente.'
 					})
 				} catch (error) {
 					console.error(error)

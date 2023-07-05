@@ -52,10 +52,10 @@
 					const { data } = await axios.get(
 						`/api/Products/GetProductsByCategory/${this.categoryId}`
 					)
-					const products = data.products.slice(0, 4) // Obtener los primeros 4 productos
+					const products = data.products.slice(0, 4) // Obtener solo 4 productos
 					this.products = products // Almacenar los productos en el array
 					if (products.length > 0) {
-						this.categoryName = products[0].category.name // Obtener el nombre de la categoría del primer producto
+						this.categoryName = products[0].category.name // Obtener el nombre de la categoría
 					}
 					this.load = true
 				} catch (error) {

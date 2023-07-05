@@ -17,6 +17,13 @@ class UserController extends Controller
 		return view('users.index', compact('users'));
 	}
 
+
+
+	public function showRegister()
+	{
+		return view('register.index');
+	}
+
 	public function showCreateUser()
 	{
 		$roles = $this->getAllRoles()->original['roles'];

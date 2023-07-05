@@ -31,6 +31,8 @@ Route::get('/', [ProductController::class, 'showHomeWithProducts'])->name('home'
 // Usuarios
 Route::group(['prefix' => 'Users', 'middleware' => ['auth', 'role:admin'], 'controller' => UserController::class], function () {
 	Route::get('/', 'showAllUsers')->name('users');
+	Route::get('/a', 'showRegister')->name('register');
+
 	Route::post('/CreateUser', 'showCreateUser');
 
 	Route::get('/GetAllUsers', 'getAllUsers'); //	mostrar todos los usuarios
@@ -74,6 +76,8 @@ Route::group(['prefix' => 'Product', 'controller' => ProductController::class], 
 Route::group(['prefix' => 'Categories', 'controller' => CategoryController::class], function () {
 
 	Route::get('/', 'showCategories')->name('categories');
+	Route::get('/List', 'showallCategories')->name('listcategories');
+
 	Route::get('/GetAllCategories', 'getAllCategories');
 
 });
@@ -132,12 +136,3 @@ Route::group(['controller' => VerificationController::class], function () {
 	Route::post('email/resend', 'resend')->name('verification.resend');
 
 });
-
-
-
-
-/*
-// Registration Routes...
-Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-Route::post('register', 'Auth\RegisterController@register');
-*/

@@ -59,10 +59,14 @@
                                 <a class="dropdown-item" href="{{ route('products') }}">
                                     Productos
                                 </a>
+                                {{-- Productos --}}
+                                <a class="dropdown-item" href="{{ route('listcategories') }}">
+                                    Categorias
+                                </a>
                             @endrole
                             {{-- Categorias --}}
                             <a class="dropdown-item" href="{{ route('categories') }}">
-                                Categorias
+                                Listar Categorias
                             </a>
 
                             <a class="dropdown-item" href="{{ route('product') }}">

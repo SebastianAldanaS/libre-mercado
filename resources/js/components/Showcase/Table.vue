@@ -21,7 +21,7 @@
 						<h5 class="card-title">
 							<b>{{ product.name }}</b>
 						</h5>
-						<p class="card-text">{{ product.description }}</p>
+
 						<p v-if="product.stock !== undefined" class="card-text">
 							Stock: {{ product.stock }}
 						</p>

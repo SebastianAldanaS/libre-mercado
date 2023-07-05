@@ -20,4 +20,9 @@ class CategoryController extends Controller
 		return view('products.category');
 	}
 
+	public function showallCategories()
+	{
+		return view('categories.index');
+	}
+
 }
