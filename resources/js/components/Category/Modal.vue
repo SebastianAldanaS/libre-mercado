@@ -4,7 +4,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">
-						{{ `${is_create ? 'Crear' : 'Actualizar'} Categoria` }}
+						{{ `${is_create ? 'Crear' : 'Actualizar'} Categoría` }}
 					</h5>
 					<button
 						type="button"
@@ -14,20 +14,33 @@
 					></button>
 				</div>
 				<div class="modal-body">
-					<form>
+					<form @submit.prevent="storeCategory">
 						<div class="mb-3">
 							<label for="name" class="form-label">Nombre</label>
-							<input type="text" class="form-control" id="name" />
+							<input
+								type="text"
+								class="form-control"
+								id="name"
+								v-model="category.name"
+							/>
 						</div>
 
-						<button type="submit" class="btn btn-primary">Submit</button>
+						<!-- Otros campos de categoría aquí -->
+
+						<hr />
+						<section class="d-flex justify-content-end">
+							<button type="submit" class="btn btn-primary me-1">
+								{{ `${is_create ? 'Crear' : 'Actualizar'}` }}
+							</button>
+							<button
+								type="button"
+								class="btn btn-secondary me-1"
+								data-bs-dismiss="modal"
+							>
+								Cancelar
+							</button>
+						</section>
 					</form>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-						Close
-					</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
 				</div>
 			</div>
 		</div>
@@ -36,9 +49,46 @@
 
 <script>
 	export default {
+		props: ['category_data'],
 		data() {
 			return {
-				is_create: false
+				is_create: true,
+				category: {}
+			}
+		},
+		created() {
+			this.setCategory()
+		},
+		methods: {
+			setCategory() {
+				if (!this.category_data) return
+				this.category = { ...this.category_data }
+				this.is_create = false
+			},
+			async storeCategory() {
+				try {
+					if (this.is_create) {
+						await axios.post('/Categories/SaveCategory', this.category)
+					} else {
+						await axios.post(
+							`/Categories/UpdateCategory/${this.category.id}`,
+							this.category
+						)
+					}
+					swal.fire({
+						icon: 'success',
+						title: 'Felicidades',
+						text: 'Categoría guardada'
+					})
+					this.$parent.closeModal()
+				} catch (error) {
+					console.error(error)
+					swal.fire({
+						icon: 'error',
+						title: 'Oops...',
+						text: 'Algo salió mal'
+					})
+				}
 			}
 		}
 	}

@@ -1,16 +1,14 @@
 <template>
-	<div class="card mx-5 my-5">
+	<div class="card my-5 mx-5">
 		<div class="card-header d-flex justify-content-between">
-			<h2>Categorias</h2>
-			<button @click="openModal" class="btn btn-primary">Crear Categoria</button>
+			<h2>Categorías</h2>
+			<button @click="openModal" class="btn btn-primary">Crear Categoría</button>
 		</div>
 		<div class="card-body">
-			<section class="table-responsive" v-if="load">
-				<table-component :categories_data="categories" />
-			</section>
+			<table-component ref="table" />
 		</div>
-		<section>
-			<modal v-show="load_modal" />
+		<section v-if="load_modal">
+			<modal :category_data="category" />
 		</section>
 	</div>
 </template>
@@ -20,44 +18,41 @@
 	import Modal from './Modal.vue'
 
 	export default {
-		props: [],
 		components: {
 			TableComponent,
 			Modal
 		},
 		data() {
 			return {
-				categories: [],
-				load: false,
 				load_modal: false,
-				modal: null
+				modal: null,
+				category: null
 			}
 		},
-		created() {
-			this.index()
-		},
 		methods: {
-			async index() {
-				this.getCategories()
-			},
-			async getCategories() {
-				try {
-					const { data } = await axios.get('GetAllCategories')
-					this.categories = data.categories
-					this.load = true
-				} catch (error) {
-					console.error(error)
-				}
-			},
 			openModal() {
 				this.load_modal = true
-
 				setTimeout(() => {
 					this.modal = new bootstrap.Modal(document.getElementById('category_modal'), {
 						keyboard: false
 					})
 					this.modal.show()
+
+					const modal = document.getElementById('category_modal')
+					modal.addEventListener('hidden.bs.modal', () => {
+						this.load_modal = false
+						this.category = null
+					})
 				}, 200)
+			},
+			closeModal() {
+				this.modal.hide()
+				this.$refs.table.datatable.destroy()
+				this.$refs.table.index()
+			},
+			editCategory(category) {
+				this.category = category
+				this.openModal()
 			}
 		}
 	}

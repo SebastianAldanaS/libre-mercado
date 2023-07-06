@@ -84,8 +84,14 @@ Route::group(['prefix' => 'Categories', 'controller' => CategoryController::clas
 
 	Route::get('/', 'showCategories')->name('categories');
 	Route::get('/List', 'showallCategories')->name('listcategories');
+	Route::post('/CreateCategory', 'createCategory');
 
-	Route::get('/GetAllCategories', 'getAllCategories');
+	Route::get('/GetAllCategoriesDataTable', 'getAllCategoriesDataTable');
+	Route::get('/GetACategory/{category}', 'getACategory');
+
+	Route::post('/SaveCategory', 'saveCategory');
+	Route::post('/UpdateCategory/{category}', 'updateCategory');
+	Route::delete('/DeleteCategory/{category}', 'deleteACategory');
 
 });
 
