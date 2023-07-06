@@ -11,6 +11,7 @@ import ShowCategoryComponent from './components/ShowCategory/Index.vue'
 import ProductDetail from './components/ProductDetail/index.vue'
 import CategoryList from './components/Category/Index.vue'
 import RegisterForm from './components/Register/index.vue'
+import CarShop from './components/Carshop/Index.vue'
 
 const app = createApp({
 	components: {
@@ -20,7 +21,8 @@ const app = createApp({
 		ShowCategoryComponent,
 		ProductDetail,
 		CategoryList,
-		RegisterForm
+		RegisterForm,
+		CarShop
 	}
 })
 

@@ -9,7 +9,7 @@
 			</div>
 			<div class="card-body">
 				<div class="row">
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<img
 							:src="
 								product.image
@@ -55,16 +55,22 @@
 			}
 		},
 		mounted() {
-			axios
-				.get('/api/Products/GetAProduct/1')
-				.then(response => {
-					this.product = response.data.product
-					this.loading = false
-				})
-				.catch(error => {
-					console.error(error)
-					this.loading = false
-				})
+			const params = new URLSearchParams(window.location.search)
+			const productId = params.get('productId')
+			if (productId) {
+				axios
+					.get(`/api/Products/GetAProduct/${productId}`)
+					.then(response => {
+						this.product = response.data.product
+						this.loading = false
+					})
+					.catch(error => {
+						console.error(error)
+						this.loading = false
+					})
+			} else {
+				// Manejar el caso en que no se proporciona el productId
+			}
 		}
 	}
 </script>

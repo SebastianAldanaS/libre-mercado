@@ -28,21 +28,27 @@ Route::get('/crear', function () {
 
 Route::get('/', [ProductController::class, 'showHomeWithProducts'])->name('home');
 
+Route::get('/register', [UserController::class, 'showRegister'])->name('registro');
+
 // Usuarios
-Route::group(['prefix' => 'Users', 'middleware' => ['auth', 'role:admin'], 'controller' => UserController::class], function () {
-	Route::get('/', 'showAllUsers')->name('users');
-	Route::get('/a', 'showRegister')->name('register');
-
-	Route::post('/CreateUser', 'showCreateUser');
-
-	Route::get('/GetAllUsers', 'getAllUsers'); //	mostrar todos los usuarios
-	Route::get('/GetAnUser/{user}', 'getAnUser'); // mostrar un usuario por id
-	Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser'); // buscar si un usuario tiene carrito
+Route::group(['prefix' => 'Users', 'controller' => UserController::class], function () {
 
 	Route::post('/SaveUser', 'saveUser'); //crear usuario
+	Route::group(
+		[
+			'middleware' => ['auth', 'role:admin']
+		],
+		function () {
 
-	Route::put('/UpdateUser/{user}', 'updateUser'); //actulizar usuario
-	Route::delete('/DeleteAUser/{user}', 'deleteUser'); //eliminar usuario
+			Route::get('/', 'showAllUsers')->name('users');
+			Route::post('/CreateUser', 'showCreateUser');
+			Route::get('/GetAllUsers', 'getAllUsers'); //	mostrar todos los usuarios
+			Route::get('/GetAnUser/{user}', 'getAnUser'); // mostrar un usuario por id
+			Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser'); // buscar si un usuario tiene carrito
+			Route::put('/UpdateUser/{user}', 'updateUser'); //actulizar usuario
+			Route::delete('/DeleteAUser/{user}', 'deleteUser'); //eliminar usuario
+		}
+	);
 
 });
 
@@ -67,7 +73,7 @@ Route::group(['prefix' => 'Products', 'middleware' => ['auth', 'role:admin'], 'c
 
 // Producto
 Route::group(['prefix' => 'Product', 'controller' => ProductController::class], function () {
-	Route::get('/', 'showProduct')->name('product');
+	Route::get('/{product}', 'showProduct')->name('product');
 
 });
 
@@ -86,6 +92,8 @@ Route::group(['prefix' => 'Categories', 'controller' => CategoryController::clas
 Route::group(['prefix' => 'Cars', 'controller' => CarController::class], function () {
 
 	Route::post('/CreateCar', 'createCar'); //crear carrito
+	Route::get('/', 'showCar')->name('carrito');
+
 
 });
 

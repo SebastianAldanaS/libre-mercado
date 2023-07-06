@@ -58,7 +58,7 @@
 				this.products = this.products_data.filter(product => product.stock > 0)
 			},
 			redirectToProduct(productId) {
-				window.location.href = `/Product`
+				window.location.href = `/Product/${productId}?productId=${productId}`
 			}
 		}
 	}

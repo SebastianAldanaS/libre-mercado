@@ -36,17 +36,19 @@
                         </li>
                     @endif
 
-                    @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">Registro</a>
-                        </li>
-                    @endif
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('registro') }}">Registro</a>
+                    </li>
                 @else
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown d-flex align-items-center">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->full_name }}
                         </a>
+                        <div aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item mx-2" href="{{ route('carrito') }}">Carrito</a>
+                        </div>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             {{-- Menu Admin --}}
                             @role('admin')
@@ -69,9 +71,7 @@
                                 Listar Categorias
                             </a>
 
-                            <a class="dropdown-item" href="{{ route('product') }}">
-                                Producto
-                            </a>
+
 
                             {{-- Logout --}}
                             <a class="dropdown-item" href="{{ route('logout') }}"

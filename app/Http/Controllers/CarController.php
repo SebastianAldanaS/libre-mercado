@@ -16,4 +16,9 @@ class CarController extends Controller
 		$car->save();
 		return response()->json(['car' => $car], 201);
 	}
+
+	public function showCar()
+	{
+		return view('carshop.index');
+	}
 }
