@@ -37,7 +37,9 @@
 							<b class="mb-0" style="font-size: 25px">Precio: ${{ product.price }}</b>
 						</div>
 						<div class="mt-3 d-flex justify-content-center flex-wrap my-5">
-							<a href="#" class="btn btn-primary">Añadir a Carrito</a>
+							<button @click="addToCart" class="btn btn-primary">
+								Añadir a Carrito
+							</button>
 						</div>
 					</div>
 				</div>
@@ -48,6 +50,12 @@
 
 <script>
 	export default {
+		props: {
+			userId: {
+				type: Number,
+				required: true
+			}
+		},
 		data() {
 			return {
 				product: {},
@@ -70,6 +78,31 @@
 					})
 			} else {
 				// Manejar el caso en que no se proporciona el productId
+			}
+		},
+		methods: {
+			addToCart() {
+				const productData = {
+					customer_id: this.userId, // Aquí debes proporcionar el ID del cliente actual
+					product_id: this.product.id,
+					product_price: this.product.price,
+					quantity: 1 // Puedes ajustar la cantidad según tus necesidades
+				}
+
+				axios
+					.post('/api/Cars/CreateCar', productData)
+					.then(response => {
+						swal.fire({
+							icon: 'success',
+							title: 'Felicidades',
+							text: 'Producto Añadido al carrito'
+						})
+						console.log(response.data)
+					})
+					.catch(error => {
+						// Aquí puedes manejar el error en caso de que ocurra
+						console.error(error)
+					})
 			}
 		}
 	}

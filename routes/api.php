@@ -40,11 +40,15 @@ Route::group(['prefix' => 'Categories', 'controller' => CategoryController::clas
 
 	Route::get('/GetAllCategories', 'getAllCategories')->name('categories');
 
+
 });
 
 // Carritos
 Route::group(['prefix' => 'Cars', 'controller' => CarController::class], function () {
 
 	Route::post('/CreateCar', 'createCar'); //crear carrito
+	Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser');
+	Route::delete('/DeleteCarProduct/{carId}', 'deleteCarProduct');
+
 
 });

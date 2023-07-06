@@ -1,6 +1,6 @@
 <x-app>
     <section class="container">
-        <car-shop />
+        <car-shop :user-id="{{ auth()->user()->id }}" />
     </section>
 
 </x-app>

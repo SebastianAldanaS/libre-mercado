@@ -34,17 +34,18 @@ Route::get('/register', [UserController::class, 'showRegister'])->name('registro
 Route::group(['prefix' => 'Users', 'controller' => UserController::class], function () {
 
 	Route::post('/SaveUser', 'saveUser'); //crear usuario
+
 	Route::group(
 		[
 			'middleware' => ['auth', 'role:admin']
 		],
 		function () {
 
+			Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser'); // buscar si un usuario tiene carrito
 			Route::get('/', 'showAllUsers')->name('users');
 			Route::post('/CreateUser', 'showCreateUser');
 			Route::get('/GetAllUsers', 'getAllUsers'); //	mostrar todos los usuarios
 			Route::get('/GetAnUser/{user}', 'getAnUser'); // mostrar un usuario por id
-			Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser'); // buscar si un usuario tiene carrito
 			Route::put('/UpdateUser/{user}', 'updateUser'); //actulizar usuario
 			Route::delete('/DeleteAUser/{user}', 'deleteUser'); //eliminar usuario
 		}
@@ -93,7 +94,7 @@ Route::group(['prefix' => 'Cars', 'controller' => CarController::class], functio
 
 	Route::post('/CreateCar', 'createCar'); //crear carrito
 	Route::get('/', 'showCar')->name('carrito');
-
+	Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser');
 
 });
 

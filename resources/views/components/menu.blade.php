@@ -41,6 +41,9 @@
                         <a class="nav-link" href="{{ route('registro') }}">Registro</a>
                     </li>
                 @else
+                    @php
+                        $currentUserId = auth()->user()->id;
+                    @endphp
                     <li class="nav-item dropdown d-flex align-items-center">
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
