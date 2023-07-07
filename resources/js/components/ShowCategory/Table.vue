@@ -4,12 +4,12 @@
 		<tbody>
 			<section class="d-flex justify-content-center flex-wrap">
 				<div
-					class="card mx-2 my-2"
+					class="card-product mx-2 my-2"
 					style="width: 16rem"
 					v-for="(product, index) in products"
 					:key="index"
 				>
-					<div class="card-body">
+					<div class="card-body-categories">
 						<img
 							:src="
 								product.image

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
@@ -76,17 +77,42 @@ class UserController extends Controller
 
 	public function saveUser(CreateUserRequest $request)
 	{
-		$user = new User($request->all());
-		$user->save();
-		return response()->json(['user' => $user], 200);
+		try {
+			DB::beginTransaction();
+			$user = new User($request->all());
+			$user->save();
+			$user->assignRole($request->role);
+			DB::commit();
+			if ($request->ajax())
+				return response()->json(['user' => $user], 201);
+		} catch (\Throwable $th) {
+			DB::rollBack();
+			throw $th;
+		}
 	}
+
 
 
 	public function updateUser(User $user, UpdateUserRequest $request)
 	{
-		$user->update($request->all());
-		return response()->json(['user' => $user->refresh()], 201);
 
+		try {
+			DB::beginTransaction();
+			$allRequest = $request->all();
+			if (isset($allRequest['password'])) {
+				if (!$allRequest['password'])
+					unset($allRequest['password']);
+			}
+			$user->update($request->all());
+			$user->syncRoles([$request->role]);
+			DB::commit();
+			if ($request->ajax())
+				return response()->json(['user' => $user->refresh()], 201);
+			return back()->with('success', 'Usuario editado');
+		} catch (\Throwable $th) {
+			DB::rollBack();
+			throw $th;
+		}
 	}
 
 	public function deleteUser(User $user)

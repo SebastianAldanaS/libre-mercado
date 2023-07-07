@@ -1,73 +1,34 @@
 <template>
-	<div class="card my-5 mx-5">
-		<div class="card-header d-flex justify-content-between">
-			<h2 class="h2">{{ categoryName }}</h2>
-			<button
-				class="btn"
-				style="font-style: italic; font-family: 'Pacifico', cursive; font-weight: bold"
-				@click="redirectToProductPage"
-			>
-				Ver más Categorias
-			</button>
-		</div>
-		<div class="card-body">
-			<section class="table-responsive" v-if="load">
-				<table-component :products_data="products" />
-			</section>
-
-			<section v-else class="d-flex justify-content-center my-3">
-				<div class="spinner-border text-primary" role="status">
-					<span class="visually-hidden">Loading...</span>
-				</div>
-			</section>
+	<div>
+		<div v-for="category in categories" :key="category.id">
+			<index-category :categoryId="category.id" />
 		</div>
 	</div>
 </template>
 
 <script>
-	import TableComponent from './Table.vue'
+	import IndexCategory from './IndexCategory.vue'
 
 	export default {
-		props: {
-			categoryId: {
-				type: Number,
-				required: true
-			}
-		},
 		components: {
-			TableComponent
+			IndexCategory
 		},
 		data() {
 			return {
-				products: [],
-				load: false,
-				categoryName: ''
+				categories: []
 			}
 		},
 		created() {
-			this.index()
+			this.getCategories()
 		},
 		methods: {
-			async index() {
-				await this.getProducts()
-			},
-			async getProducts() {
+			async getCategories() {
 				try {
-					const { data } = await axios.get(
-						`/api/Products/GetProductsByCategory/${this.categoryId}`
-					)
-					const products = data.products.slice(0, 4) // Obtener solo 4 productos
-					this.products = products // Almacenar los productos en el array
-					if (products.length > 0) {
-						this.categoryName = products[0].category.name // Obtener el nombre de la categoría
-					}
-					this.load = true
+					const response = await axios.get('/api/Categories/GetAllCategories')
+					this.categories = response.data.categories
 				} catch (error) {
 					console.error(error)
 				}
-			},
-			redirectToProductPage() {
-				window.location.href = 'http://localhost:8020/Categories'
 			}
 		}
 	}

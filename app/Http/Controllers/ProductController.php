@@ -6,6 +6,10 @@ use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Requests\Product\CreateProductRequest;
+use App\Http\Requests\Product\UpdateProductRequest;
+
+
 
 class ProductController extends Controller
 {
@@ -77,16 +81,17 @@ class ProductController extends Controller
 		return response()->json(['products' => $products], 200);
 	}
 
-	public function saveProduct(Request $request)
+	public function saveProduct(CreateProductRequest $request)
 	{
-		$product = new Product($request->all());
+		$product = new Product($request->validated());
 		$this->upLoadImages($request, $product);
 		$product->save();
 		return response()->json(['product' => $product->load('Seller', 'Category')], 201);
 	}
 
-	public function updateProduct(Request $request, Product $product)
+	public function updateProduct(UpdateProductRequest $request, Product $product)
 	{
+		$product = new Product($request->validated());
 		$requestAll = $request->all();
 		$this->upLoadImages($request, $product);
 		$requestAll['image'] = $product->image;
@@ -102,11 +107,13 @@ class ProductController extends Controller
 
 	private function upLoadImages($request, &$product)
 	{
-		if (!isset($request->image))
+		if (!$request->hasFile('image')) {
 			return;
+		}
+
 		$random = Str::random(15);
-		$image_name = "{$random}.{$request->image->clientExtension()}";
-		$request->image->move(storage_path('app/public/images'), $image_name);
+		$image_name = "{$random}.{$request->file('image')->getClientOriginalExtension()}";
+		$request->file('image')->move(storage_path('app/public/images'), $image_name);
 		$product->image = $image_name;
 	}
 

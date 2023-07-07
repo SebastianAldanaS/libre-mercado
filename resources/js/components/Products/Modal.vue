@@ -34,7 +34,12 @@
 								id="name"
 								v-model="product.name"
 							/>
+
+							<div class="alert alert-danger" v-if="errors && errors.name">
+								{{ errors.name[0] }}
+							</div>
 						</div>
+
 						<div class="mb-3">
 							<label for="description" class="form-label">Descripcion</label>
 							<textarea
@@ -43,6 +48,9 @@
 								rows="3"
 								v-model="product.description"
 							></textarea>
+							<div class="alert alert-danger" v-if="errors && errors.description">
+								{{ errors.description[0] }}
+							</div>
 						</div>
 						<div class="mb-3">
 							<label for="stock" class="form-label">Stock</label>
@@ -52,15 +60,22 @@
 								id="stock"
 								v-model="product.stock"
 							/>
+							<div class="alert alert-danger" v-if="errors && errors.stock">
+								{{ errors.stock[0] }}
+							</div>
 						</div>
 						<div class="mb-3">
 							<label for="price" class="form-label">Precio</label>
 							<input
-								type="float"
+								type="number"
+								step="0.01"
 								class="form-control"
 								id="price"
 								v-model="product.price"
 							/>
+							<div class="alert alert-danger" v-if="errors && errors.price">
+								{{ errors.price[0] }}
+							</div>
 						</div>
 
 						<!--ID del vendedor automatico-->
@@ -72,6 +87,9 @@
 								id="seller_id"
 								v-model="product.seller_id"
 							/>
+							<div class="alert alert-danger" v-if="errors && errors.seller_id">
+								{{ errors.seller_id[0] }}
+							</div>
 						</div>
 
 						<div class="mb-3">
@@ -84,14 +102,16 @@
 								:reduce="category => category.id"
 								label="name"
 								:clearable="false"
-							>
-							</v-select>
+							></v-select>
+							<div class="alert alert-danger" v-if="errors && errors.category_id">
+								{{ errors.category_id[0] }}
+							</div>
 						</div>
 
 						<hr />
 						<section class="d-flex justify-content-end">
 							<button type="submit" class="btn btn-primary me-1">
-								{{ `${is_create ? 'Crear' : 'Actualizar'} ` }}
+								{{ `${is_create ? 'Crear' : 'Actualizar'}` }}
 							</button>
 							<button
 								type="button"
@@ -116,7 +136,8 @@
 				is_create: true,
 				categories: [],
 				product: {},
-				file: null
+				file: null,
+				errors: {}
 			}
 		},
 		created() {
@@ -165,12 +186,9 @@
 					})
 					this.$parent.closeModal()
 				} catch (error) {
-					console.error(error)
-					swal.fire({
-						icon: 'error',
-						title: 'Oops...',
-						text: 'Algo salio mal'
-					})
+					if (error.response && error.response.status === 422) {
+						this.errors = error.response.data.errors
+					}
 				}
 			}
 		}

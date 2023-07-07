@@ -6,12 +6,10 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class CreateProductRequest extends FormRequest
 {
-
 	public function authorize(): bool
 	{
 		return true;
 	}
-
 
 	public function rules(): array
 	{
@@ -19,8 +17,9 @@ class CreateProductRequest extends FormRequest
 			'name' => ['required', 'string'],
 			'description' => ['required', 'string'],
 			'stock' => ['required', 'numeric'],
-			'price' => ['required', 'decimal:2']
-
+			'price' => ['required', 'numeric'],
+			'seller_id' => ['numeric'],
+			'category_id' => ['required', 'numeric'],
 		];
 	}
 
@@ -29,17 +28,16 @@ class CreateProductRequest extends FormRequest
 	{
 		return [
 			'name.required' => 'El nombre es requerido.',
-			'name.string' => 'El nombre no es valido.',
-
-			'description.required' => 'Una descripcion es requerida',
-			'description.string' => 'La descripcion no es valida',
-
-			'stock.required' => 'El stock es requerido',
-			'stock.numeric' => 'El stock no es valido',
-
-			'price.required' => 'El precio es requerido',
-			'price.decimal' => 'El precio no es valido'
-
+			'name.string' => 'El nombre no es válido.',
+			'description.required' => 'La descripción es requerida.',
+			'description.string' => 'La descripción no es válida.',
+			'stock.required' => 'El stock es requerido.',
+			'stock.numeric' => 'El stock debe ser numérico.',
+			'price.required' => 'El precio es requerido.',
+			'price.numeric' => 'El precio debe ser numérico.',
+			'seller_id.numeric' => 'El ID del vendedor no es válido.',
+			'category_id.required' => 'El ID de la categoría es requerido.',
+			'category_id.numeric' => 'La categoria es obligatoria.',
 		];
 	}
 }

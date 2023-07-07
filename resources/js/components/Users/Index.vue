@@ -6,7 +6,11 @@
 		</div>
 		<div class="card-body">
 			<section class="table-responsive" v-if="load">
-				<TableComponent :users_data="users" :handleDeleteUser="confirmDeleteUser" />
+				<TableComponent
+					ref="table"
+					:users_data="users"
+					:handleDeleteUser="confirmDeleteUser"
+				/>
 			</section>
 			<!--Load-->
 			<section v-else class="d-flex justify-content-center my-3">
@@ -16,7 +20,7 @@
 			</section>
 		</div>
 		<section v-if="load_modal">
-			<Modal :user_data="user" />
+			<Modal :user_data="user" @close-modal="closeModal" />
 		</section>
 	</div>
 </template>
@@ -138,6 +142,10 @@
 							text: 'Ha ocurrido un error al eliminar el usuario.'
 						})
 					})
+			},
+			closeModal() {
+				this.modal.hide()
+				this.$refs.table.index()
 			}
 		}
 	}
