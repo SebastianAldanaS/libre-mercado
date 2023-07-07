@@ -3,7 +3,7 @@
 		<div v-if="loading" class="text-center">Cargando...</div>
 		<div v-else class="card">
 			<div class="card-header">
-				<h1>
+				<h1 class="h2">
 					<b>{{ product.name }}</b>
 				</h1>
 			</div>
@@ -16,7 +16,7 @@
 									? '/storage/images/' + product.image
 									: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png'
 							"
-							class="card-img-top"
+							class="card-img"
 							alt="Producto"
 						/>
 					</div>
@@ -37,9 +37,18 @@
 							<b class="mb-0" style="font-size: 25px">Precio: ${{ product.price }}</b>
 						</div>
 						<div class="mt-3 d-flex justify-content-center flex-wrap my-5">
-							<button @click="addToCart" class="btn btn-primary">
-								Añadir a Carrito
-							</button>
+							<div class="d-flex flex-column align-items-center">
+								<button
+									@click="addToCart"
+									class="btn btn-primary"
+									:disabled="isProductInCart"
+								>
+									Añadir a Carrito
+								</button>
+								<p v-if="isProductInCart" class="text-muted my-3">
+									El producto ya está en el carrito
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -59,7 +68,8 @@
 		data() {
 			return {
 				product: {},
-				loading: true
+				loading: true,
+				isProductInCart: false
 			}
 		},
 		mounted() {
@@ -70,6 +80,7 @@
 					.get(`/api/Products/GetAProduct/${productId}`)
 					.then(response => {
 						this.product = response.data.product
+						this.checkProductInCart() // Verificar si el producto está en el carrito
 						this.loading = false
 					})
 					.catch(error => {
@@ -83,10 +94,10 @@
 		methods: {
 			addToCart() {
 				const productData = {
-					customer_id: this.userId, // Aquí debes proporcionar el ID del cliente actual
+					customer_id: this.userId,
 					product_id: this.product.id,
 					product_price: this.product.price,
-					quantity: 1 // Puedes ajustar la cantidad según tus necesidades
+					quantity: 1
 				}
 
 				axios
@@ -98,9 +109,21 @@
 							text: 'Producto Añadido al carrito'
 						})
 						console.log(response.data)
+						this.isProductInCart = true // Marcar el producto como agregado al carrito
 					})
 					.catch(error => {
-						// Aquí puedes manejar el error en caso de que ocurra
+						console.error(error)
+					})
+			},
+			checkProductInCart() {
+				axios
+					.get(`/api/Cars/GetAllCarsByUser/${this.userId}`)
+					.then(response => {
+						const cars = response.data.customer_cars
+						const isProductInCart = cars.some(car => car.product_id === this.product.id)
+						this.isProductInCart = isProductInCart
+					})
+					.catch(error => {
 						console.error(error)
 					})
 			}

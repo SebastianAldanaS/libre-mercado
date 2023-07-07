@@ -3,9 +3,12 @@
         <div class="row justify-content-center my-5">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Login') }}</div>
+                    <div class="card-header h2">{{ __('Login') }}</div>
 
-                    <div class="card-body">
+                    <div class="card-body "
+                        style="font-style: italic;
+					font-family: 'Pacifico', cursive;
+					font-weight: bold;">
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
 
@@ -47,7 +50,11 @@
 
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit"
+                                        style="background-image: linear-gradient(to top, #8a5c2e, #d0a66c); font-style: italic;
+										font-family: 'Pacifico', cursive;
+										font-weight: bold;"
+                                        class="btn">
                                         {{ __('Entrar') }}
                                     </button>
 

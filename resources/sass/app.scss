@@ -11,64 +11,224 @@
 
 @import '~/datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 
+// Colores
+$color-primario: linear-gradient(to bottom, #004226, #8bd487);
+$color-secundario:#c7f0a3;
+$color-fondo:linear-gradient(to top, #004226, #44ab60);
+$color-titulo: #8bd487;
+$color-product: linear-gradient(to bottom, #107a40, #44ab60);
+$color-products: linear-gradient(to top, #8a5c2e, #d0a66c);
+
 .card {
 	border: none;
 	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  }
+}
 
-  .card-header {
-	background-color: #f8f9fa;
+.card-header {
+	background-image: $color-fondo;
 	border-bottom: 1px solid #dee2e6;
 	padding: 1rem;
-  }
+}
 
-  .card-body {
+.card-product {
+	background-image: $color-products;
+	display: flex; /* Utilizar flexbox para centrar el contenido */
+	justify-content: center; /* Centrar horizontalmente el contenido */
+	align-items: center; /* Centrar verticalmente el contenido */
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Agregar sombra */
+	margin: 10px; /* Agregar margen */
+}
+
+
+
+
+.card-body {
 	padding: 1rem;
-  }
+	background-image: $color-product;
+}
 
-  .text-center {
+.text-center {
 	margin-top: 2rem;
-  }
+}
 
-  .list-group-item {
+.list-group-item {
 	border: none;
 	padding: 1rem;
-  }
+}
 
-  .product-name {
+.product-name {
 	font-weight: bold;
 	margin-bottom: 0.5rem;
 	font-size: 1.2rem;
-  }
+}
 
-  .product-details {
+.product-details {
 	font-size: 1rem;
 	color: #6c757d;
 	line-height: 1.5;
-  }
+}
 
-  .detail-label {
+.detail-label {
 	font-weight: bold;
 	margin-right: 0.5rem;
-  }
+}
 
-  .quantity {
+.quantity {
 	font-size: 1.2rem;
 	font-weight: bold;
 	margin: 0 0.5rem;
-  }
+}
 
-  .text-end button {
+.text-end button {
 	margin: 0 0.5rem;
-  }
+}
 
-  .row.align-items-center {
+.row.align-items-center {
 	display: flex;
 	align-items: center;
-  }
+}
 
-  .total-price {
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 10px;
-  }
+.total-price {
+	font-size: 24px;
+	font-weight: bold;
+	margin-top: 10px;
+}
+
+//MENU
+
+.custom-navbar {
+	background-image: $color-primario;
+}
+
+// Estilos para la tarjeta
+.card {
+	margin: 1.5rem 0;
+	border: none;
+	background-color: #0d5b8f;
+	border-radius: 0.5rem;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-image: $color-fondo;
+	color: $color-titulo;
+	padding: 1rem;
+	border-bottom: none;
+	border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.card-header h2 {
+	margin-bottom: 0;
+}
+
+.card-body {
+	padding: 1rem;
+}
+
+.card-body .spinner-border {
+	margin: 2rem 0;
+}
+
+.card-header button.btn {
+	color: #000000;
+	background-color: $color-secundario;
+}
+
+// Estilos para el indicador de carga
+.spinner-border {
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	vertical-align: text-bottom;
+	border: 0.25em solid currentColor;
+	border-right-color: transparent;
+	border-radius: 50%;
+	animation: spinner-border 0.75s linear infinite;
+}
+
+@keyframes spinner-border {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.h2 {
+	color: $color-secundario;
+	font-style: italic;
+	font-family: 'Pacifico', cursive;
+}
+
+.card-product {
+	background-color: $color-primario;
+	color: $color-secundario;
+	font-style: italic;
+	font-family: 'Pacifico', cursive;
+	font-weight: bold;
+}
+
+.nav-link{
+	color: #8bd487;
+	font-style: italic;
+	font-family: 'Pacifico', cursive;
+}
+
+
+.form-group{
+	margin: 2rem 0;
+}
+
+.card-register label{
+	color: $color-primario;
+	font-style: italic;
+	font-family: 'Pacifico', cursive;
+}
+
+.card-img-top{
+	width: 13rem;
+	height: 18rem;
+}
+
+.text-muted{
+	color: #FF0000;
+	font-style: italic;
+	font-family: 'Pacifico', cursive;
+	font-weight: bold;
+	font-size: 14px;
+  	text-align: center;
+  	padding: 5px;
+}
+
+
+.product-image {
+  width: 100%;
+  max-width: 100px;
+  height: auto;
+}
+
+.product-details {
+  margin-left: 15px;
+}
+
+.product-name {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.product-price-stock {
+  font-size: 14px;
+}
+
+.detail-label {
+  font-weight: bold;
+}
+
+.total-price {
+  font-weight: bold;
+}
+
+.quantity {
+	width: 80px;
+	height: 30px;}

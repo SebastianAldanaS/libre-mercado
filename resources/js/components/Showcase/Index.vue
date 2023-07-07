@@ -1,8 +1,12 @@
 <template>
 	<div class="card my-5 mx-5">
 		<div class="card-header d-flex justify-content-between">
-			<h2>{{ categoryName }}</h2>
-			<button class="btn btn-primary" @click="redirectToProductPage">
+			<h2 class="h2">{{ categoryName }}</h2>
+			<button
+				class="btn"
+				style="font-style: italic; font-family: 'Pacifico', cursive; font-weight: bold"
+				@click="redirectToProductPage"
+			>
 				Ver más Categorias
 			</button>
 		</div>

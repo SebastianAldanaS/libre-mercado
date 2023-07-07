@@ -17,42 +17,47 @@
 											? '/storage/images/' + car.product.image
 											: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png'
 									"
-									class="card-img-top"
+									class="card-img-top product-image"
 									alt="Producto"
 								/>
 							</div>
-							<div class="col-md-6">
-								<div class="product-name">{{ car.product.name }}</div>
+							<div class="col-md-10">
 								<div class="product-details">
-									<span class="detail-label">Precio:</span>
-									{{ car.product.price }} |
-									<span class="detail-label">Stock:</span>
-									{{ car.product.stock }} |
-									<span class="detail-label">Total:</span>
-									{{ car.product.price * car.quantity }}
+									<div class="product-name">{{ car.product.name }}</div>
+									<div class="product-price-stock">
+										<span class="detail-label">Precio:</span>
+										{{ car.product.price }} |
+										<span class="detail-label">Stock:</span>
+										{{ car.product.stock }} |
+										<span class="detail-label">Total:</span>
+										{{ (car.product.price * car.quantity).toFixed(2) }}
+										<div class="col-md-10 d-flex justify-content-end">
+											<select
+												class="quantity"
+												@change="
+													updateCarQuantity(car.id, $event.target.value)
+												"
+											>
+												<option
+													v-for="quantity in availableQuantities(
+														car.product.stock
+													)"
+													:value="quantity"
+													:selected="quantity === car.quantity"
+												>
+													{{ quantity }}
+												</option>
+											</select>
+
+											<button
+												class="btn btn-danger"
+												@click="removeFromCart(car.id)"
+											>
+												Eliminar
+											</button>
+										</div>
+									</div>
 								</div>
-							</div>
-							<div class="col-md-4 d-flex align-items-center justify-content-end">
-								<button
-									@click="decrementQuantity(car.product.id, car.quantity, car.id)"
-									class="btn btn-sm btn-secondary"
-								>
-									-
-								</button>
-								<div class="quantity">{{ car.quantity }}</div>
-								<button
-									@click="
-										incrementQuantity(
-											car.product.id,
-											car.quantity,
-											car.product.stock
-										)
-									"
-									class="btn btn-sm btn-secondary"
-									:disabled="car.quantity >= car.product.stock"
-								>
-									+
-								</button>
 							</div>
 						</div>
 					</li>
@@ -96,7 +101,7 @@
 				this.customerCars.forEach(car => {
 					total += car.product.price * car.quantity
 				})
-				return total
+				return total.toFixed(2)
 			}
 		},
 		methods: {
@@ -110,70 +115,37 @@
 						console.error(error)
 					})
 			},
-			incrementQuantity(productId, currentQuantity, stock) {
-				if (currentQuantity < stock) {
-					const car = this.customerCars.find(car => car.product.id === productId)
-					if (car) {
-						const increment = 1
-						const productData = {
-							quantity: currentQuantity + increment
-						}
-
-						axios
-							.put(`/api/Cars/UpdateCarQuantity/${car.id}`, productData)
-							.then(() => {
-								swal.fire({
-									icon: 'success',
-									title: 'Felicidades',
-									text: 'Producto añadido al carrito'
-								})
-								this.getCustomerCars()
-							})
-							.catch(error => {
-								console.error(error)
-							})
-					}
-				}
+			availableQuantities(stock) {
+				return Array.from({ length: stock }, (_, index) => index + 1)
 			},
-			decrementQuantity(productId, currentQuantity, carId) {
-				if (currentQuantity <= 1) {
+			updateCarQuantity(carId, newQuantity) {
+				const car = this.customerCars.find(car => car.id === carId)
+				if (car) {
+					const stock = car.product.stock
+					const updatedQuantity = Math.min(newQuantity, stock)
+					const productData = {
+						quantity: updatedQuantity
+					}
+
 					axios
-						.delete(`/api/Cars/DeleteCarProduct/${carId}`)
+						.put(`/api/Cars/UpdateCarQuantity/${carId}`, productData)
 						.then(() => {
-							// Eliminar el producto del arreglo de customerCars en lugar de volver a obtenerlo desde la API
-							const carIndex = this.customerCars.findIndex(car => car.id === carId)
-							if (carIndex !== -1) {
-								this.customerCars.splice(carIndex, 1)
-							}
+							this.getCustomerCars()
 						})
 						.catch(error => {
-							// Manejar el error en caso de que ocurra
 							console.error(error)
 						})
 				}
-				if (currentQuantity > 1) {
-					const car = this.customerCars.find(car => car.product.id === productId)
-					if (car) {
-						const decrement = 1
-						const productData = {
-							quantity: currentQuantity - decrement
-						}
-
-						axios
-							.put(`/api/Cars/UpdateCarQuantity/${car.id}`, productData)
-							.then(() => {
-								swal.fire({
-									icon: 'success',
-									title: 'Felicidades',
-									text: 'Producto actualizado en el carrito'
-								})
-								this.getCustomerCars()
-							})
-							.catch(error => {
-								console.error(error)
-							})
-					}
-				}
+			},
+			removeFromCart(carId) {
+				axios
+					.delete(`/api/Cars/DeleteCarProduct/${carId}`)
+					.then(() => {
+						this.getCustomerCars()
+					})
+					.catch(error => {
+						console.error(error)
+					})
 			}
 		}
 	}

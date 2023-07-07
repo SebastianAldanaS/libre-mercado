@@ -1,7 +1,7 @@
 <template>
-	<section class="d-flex justify-content-center flex-wrap my-3">
-		<div class="registration-form my-3 d-flex">
-			<h2>Registro</h2>
+	<section class="">
+		<div class="card-register my-3">
+			<h2 class="h2">Registro</h2>
 			<form @submit.prevent="storeUser" class="my-5">
 				<div class="form-group">
 					<label for="document_id">Documento</label>
@@ -69,7 +69,9 @@
 						v-model="user.password_confirmation"
 					/>
 				</div>
-				<button type="submit" class="btn btn-primary">Crear</button>
+				<button type="submit" style="background-color: #ff5722" class="btn btn-primary">
+					Crear
+				</button>
 			</form>
 		</div>
 	</section>
@@ -119,34 +121,3 @@
 		}
 	}
 </script>
-
-<style scoped>
-	.registration-form {
-		max-width: 400px;
-		width: 100%;
-		padding: 20px;
-		background-color: #dfdbdb;
-		border-radius: 8px;
-		box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-	}
-
-	.registration-form h2 {
-		margin-bottom: 20px;
-	}
-
-	.registration-form .form-group {
-		margin-bottom: 20px;
-	}
-
-	.registration-form label {
-		font-weight: bold;
-	}
-
-	.registration-form .form-control {
-		border-radius: 4px;
-	}
-
-	.registration-form .btn-primary {
-		width: 100%;
-	}
-</style>
