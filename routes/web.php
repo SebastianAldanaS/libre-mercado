@@ -87,6 +87,8 @@ Route::group(['prefix' => 'Categories', 'controller' => CategoryController::clas
 	Route::post('/CreateCategory', 'createCategory');
 
 	Route::get('/GetAllCategoriesDataTable', 'getAllCategoriesDataTable');
+	Route::get('/GetAllCategories', 'getAllCategories');
+
 	Route::get('/GetACategory/{category}', 'getACategory');
 
 	Route::post('/SaveCategory', 'saveCategory');

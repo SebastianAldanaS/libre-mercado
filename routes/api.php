@@ -49,6 +49,8 @@ Route::group(['prefix' => 'Cars', 'controller' => CarController::class], functio
 	Route::post('/CreateCar', 'createCar'); //crear carrito
 	Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser');
 	Route::delete('/DeleteCarProduct/{carId}', 'deleteCarProduct');
+	Route::put('/UpdateCarQuantity/{carId}', 'updateCarQuantity');
+
 
 
 });

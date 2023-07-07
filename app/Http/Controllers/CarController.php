@@ -46,4 +46,18 @@ class CarController extends Controller
 		return response()->json(['message' => 'Carrito eliminado correctamente'], 200);
 	}
 
+	public function updateCarQuantity($carId, Request $request)
+	{
+		$car = Car::find($carId);
+		if (!$car) {
+			return response()->json(['error' => 'Carrito no encontrado'], 404);
+		}
+
+		$car->quantity = $request->input('quantity');
+		$car->save();
+
+		return response()->json(['message' => 'Cantidad de productos actualizada correctamente'], 200);
+	}
+
+
 }

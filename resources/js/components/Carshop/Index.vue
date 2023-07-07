@@ -2,13 +2,14 @@
 	<div class="card my-5 mx-5">
 		<div class="card-header d-flex justify-content-between">
 			<h2>Carrito</h2>
+			<div class="total-price">Total del carrito: {{ totalPrice }}</div>
 		</div>
 		<div class="card-body">
 			<div v-if="customerCars.length === 0" class="text-center">El carrito está vacío</div>
 			<div v-else>
 				<ul class="list-group list-group-flush">
 					<li v-for="car in groupedCars" :key="car.product.id" class="list-group-item">
-						<div class="row">
+						<div class="row align-items-center">
 							<div class="col-md-2">
 								<img
 									:src="
@@ -21,21 +22,34 @@
 								/>
 							</div>
 							<div class="col-md-6">
-								<div>{{ car.product.name }}</div>
-								<div>Precio: {{ car.product.price }}</div>
-								<div>Stock: {{ car.product.stock }}</div>
+								<div class="product-name">{{ car.product.name }}</div>
+								<div class="product-details">
+									<span class="detail-label">Precio:</span>
+									{{ car.product.price }} |
+									<span class="detail-label">Stock:</span>
+									{{ car.product.stock }} |
+									<span class="detail-label">Total:</span>
+									{{ car.product.price * car.quantity }}
+								</div>
 							</div>
-							<div class="d-flex align-items-center justify-content-end">
+							<div class="col-md-4 d-flex align-items-center justify-content-end">
 								<button
-									@click="deleteCarProduct(car.id)"
-									class="btn btn-sm btn-secondary me-2"
+									@click="decrementQuantity(car.product.id, car.quantity, car.id)"
+									class="btn btn-sm btn-secondary"
 								>
 									-
 								</button>
-								<div class="me-2">{{ car.quantity }}</div>
+								<div class="quantity">{{ car.quantity }}</div>
 								<button
-									@click="addToCart(car.product.id)"
-									class="btn btn-sm btn-secondary me-2"
+									@click="
+										incrementQuantity(
+											car.product.id,
+											car.quantity,
+											car.product.stock
+										)
+									"
+									class="btn btn-sm btn-secondary"
+									:disabled="car.quantity >= car.product.stock"
 								>
 									+
 								</button>
@@ -76,6 +90,13 @@
 					}
 				})
 				return Object.values(grouped)
+			},
+			totalPrice() {
+				let total = 0
+				this.customerCars.forEach(car => {
+					total += car.product.price * car.quantity
+				})
+				return total
 			}
 		},
 		methods: {
@@ -89,42 +110,70 @@
 						console.error(error)
 					})
 			},
-			deleteCarProduct(carId) {
-				axios
-					.delete(`/api/Cars/DeleteCarProduct/${carId}`)
-					.then(response => {
-						// Actualizar la lista de productos del carrito después de eliminar el producto
-						this.getCustomerCars()
-						// Mostrar un mensaje de éxito o realizar otras acciones necesarias
-						console.log(response.data)
-					})
-					.catch(error => {
-						// Manejar el error en caso de que ocurra
-						console.error(error)
-					})
-			},
-			addToCart() {
-				const productData = {
-					customer_id: this.userId, // Aquí debes proporcionar el ID del cliente actual
-					product_id: this.product.id,
-					product_price: this.product.price,
-					quantity: 1 // Puedes ajustar la cantidad según tus necesidades
-				}
+			incrementQuantity(productId, currentQuantity, stock) {
+				if (currentQuantity < stock) {
+					const car = this.customerCars.find(car => car.product.id === productId)
+					if (car) {
+						const increment = 1
+						const productData = {
+							quantity: currentQuantity + increment
+						}
 
-				axios
-					.post('/api/Cars/CreateCar', productData)
-					.then(response => {
-						swal.fire({
-							icon: 'success',
-							title: 'Felicidades',
-							text: 'Producto Añadido al carrito'
+						axios
+							.put(`/api/Cars/UpdateCarQuantity/${car.id}`, productData)
+							.then(() => {
+								swal.fire({
+									icon: 'success',
+									title: 'Felicidades',
+									text: 'Producto añadido al carrito'
+								})
+								this.getCustomerCars()
+							})
+							.catch(error => {
+								console.error(error)
+							})
+					}
+				}
+			},
+			decrementQuantity(productId, currentQuantity, carId) {
+				if (currentQuantity <= 1) {
+					axios
+						.delete(`/api/Cars/DeleteCarProduct/${carId}`)
+						.then(() => {
+							// Eliminar el producto del arreglo de customerCars en lugar de volver a obtenerlo desde la API
+							const carIndex = this.customerCars.findIndex(car => car.id === carId)
+							if (carIndex !== -1) {
+								this.customerCars.splice(carIndex, 1)
+							}
 						})
-						console.log(response.data)
-					})
-					.catch(error => {
-						// Aquí puedes manejar el error en caso de que ocurra
-						console.error(error)
-					})
+						.catch(error => {
+							// Manejar el error en caso de que ocurra
+							console.error(error)
+						})
+				}
+				if (currentQuantity > 1) {
+					const car = this.customerCars.find(car => car.product.id === productId)
+					if (car) {
+						const decrement = 1
+						const productData = {
+							quantity: currentQuantity - decrement
+						}
+
+						axios
+							.put(`/api/Cars/UpdateCarQuantity/${car.id}`, productData)
+							.then(() => {
+								swal.fire({
+									icon: 'success',
+									title: 'Felicidades',
+									text: 'Producto actualizado en el carrito'
+								})
+								this.getCustomerCars()
+							})
+							.catch(error => {
+								console.error(error)
+							})
+					}
+				}
 			}
 		}
 	}
