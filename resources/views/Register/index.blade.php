@@ -1,6 +1,6 @@
 <x-app>
     <section class="container">
-        <users-list />
+        <register-form />
     </section>
 
 </x-app>

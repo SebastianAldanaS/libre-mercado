@@ -126,7 +126,6 @@
 
 <script>
 	import axios from 'axios'
-	import Swal from 'sweetalert2'
 
 	export default {
 		props: ['user_data'],
@@ -146,12 +145,12 @@
 					} else {
 						await axios.put(`Users/UpdateUser/${this.user.id}`, this.user)
 					}
-					Swal.fire({
+					swal.fire({
 						icon: 'success',
 						title: 'Felicidades',
 						text: 'Usuario Creado'
 					})
-					this.$parent.closeModal()
+					this.$emit('close-modal') // Emitir evento para cerrar el modal
 				} catch (error) {
 					console.error(error)
 					if (error.response && error.response.status === 422) {

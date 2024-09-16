@@ -1,7 +1,9 @@
 <template>
 	<div class="card my-5 mx-5">
 		<div class="card-header d-flex justify-content-between">
-			<h2>{{ selectedCategoryName }}</h2>
+			<h2 style="font-style: italic; font-family: 'Pacifico', cursive">
+				{{ selectedCategoryName }}
+			</h2>
 			<div>
 				<v-select
 					:options="categories"

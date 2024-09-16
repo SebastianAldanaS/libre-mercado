@@ -28,19 +28,28 @@ Route::get('/crear', function () {
 
 Route::get('/', [ProductController::class, 'showHomeWithProducts'])->name('home');
 
-// Usuarios
-Route::group(['prefix' => 'Users', 'middleware' => ['auth', 'role:admin'], 'controller' => UserController::class], function () {
-	Route::get('/', 'showAllUsers')->name('users');
-	Route::post('/CreateUser', 'showCreateUser');
+Route::get('/register', [UserController::class, 'showRegister'])->name('registro');
 
-	Route::get('/GetAllUsers', 'getAllUsers'); //	mostrar todos los usuarios
-	Route::get('/GetAnUser/{user}', 'getAnUser'); // mostrar un usuario por id
-	Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser'); // buscar si un usuario tiene carrito
+// Usuarios
+Route::group(['prefix' => 'Users', 'controller' => UserController::class], function () {
 
 	Route::post('/SaveUser', 'saveUser'); //crear usuario
 
-	Route::put('/UpdateUser/{user}', 'updateUser'); //actulizar usuario
-	Route::delete('/DeleteAUser/{user}', 'deleteUser'); //eliminar usuario
+	Route::group(
+		[
+			'middleware' => ['auth', 'role:admin']
+		],
+		function () {
+
+			Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser'); // buscar si un usuario tiene carrito
+			Route::get('/', 'showAllUsers')->name('users');
+			Route::post('/CreateUser', 'showCreateUser');
+			Route::get('/GetAllUsers', 'getAllUsers'); //	mostrar todos los usuarios
+			Route::get('/GetAnUser/{user}', 'getAnUser'); // mostrar un usuario por id
+			Route::put('/UpdateUser/{user}', 'updateUser'); //actulizar usuario
+			Route::delete('/DeleteAUser/{user}', 'deleteUser'); //eliminar usuario
+		}
+	);
 
 });
 
@@ -65,7 +74,7 @@ Route::group(['prefix' => 'Products', 'middleware' => ['auth', 'role:admin'], 'c
 
 // Producto
 Route::group(['prefix' => 'Product', 'controller' => ProductController::class], function () {
-	Route::get('/', 'showProduct')->name('product');
+	Route::get('/{product}', 'showProduct')->name('product');
 
 });
 
@@ -74,7 +83,17 @@ Route::group(['prefix' => 'Product', 'controller' => ProductController::class], 
 Route::group(['prefix' => 'Categories', 'controller' => CategoryController::class], function () {
 
 	Route::get('/', 'showCategories')->name('categories');
+	Route::get('/List', 'showallCategories')->name('listcategories');
+	Route::post('/CreateCategory', 'createCategory');
+
+	Route::get('/GetAllCategoriesDataTable', 'getAllCategoriesDataTable');
 	Route::get('/GetAllCategories', 'getAllCategories');
+
+	Route::get('/GetACategory/{category}', 'getACategory');
+
+	Route::post('/SaveCategory', 'saveCategory');
+	Route::post('/UpdateCategory/{category}', 'updateCategory');
+	Route::delete('/DeleteCategory/{category}', 'deleteACategory');
 
 });
 
@@ -82,6 +101,10 @@ Route::group(['prefix' => 'Categories', 'controller' => CategoryController::clas
 Route::group(['prefix' => 'Cars', 'controller' => CarController::class], function () {
 
 	Route::post('/CreateCar', 'createCar'); //crear carrito
+	Route::get('/', 'showCar')->name('carrito');
+	Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser');
+	Route::delete('/DeleteCarProduct/{carId}', 'deleteCarProduct');
+	Route::put('/UpdateCarQuantity/{carId}', 'updateCarQuantity');
 
 });
 
@@ -132,12 +155,3 @@ Route::group(['controller' => VerificationController::class], function () {
 	Route::post('email/resend', 'resend')->name('verification.resend');
 
 });
-
-
-
-
-/*
-// Registration Routes...
-Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-Route::post('register', 'Auth\RegisterController@register');
-*/

@@ -28,7 +28,6 @@
 
 <script>
 	import axios from 'axios'
-	import Swal from 'sweetalert2'
 
 	export default {
 		props: ['users_data', 'handleDeleteUser'],
@@ -58,7 +57,7 @@
 			async deleteUser(user) {
 				try {
 					await this.handleDeleteUser(user) // Llama a la función handleDeleteUser pasada como prop
-					Swal.fire({
+					swal.fire({
 						icon: 'success',
 						title: 'Felicidades',
 						text: 'Usuario Eliminado'

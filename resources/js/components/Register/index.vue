@@ -1,160 +1,119 @@
 <template>
-	<div class="modal fade" id="user_modal" tabindex="-1" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Registrarse</h5>
-					<button
-						type="button"
-						class="btn-close"
-						data-bs-dismiss="modal"
-						aria-label="Close"
-					></button>
+	<section class="">
+		<div class="card-register my-3">
+			<h2 class="h2">Registro</h2>
+			<form @submit.prevent="storeUser" class="my-5">
+				<div class="form-group">
+					<label for="document_id">Documento</label>
+					<input
+						type="text"
+						class="form-control"
+						id="document_id"
+						v-model="user.document_id"
+					/>
+					<div class="text-danger" v-if="errors && errors.document_id">
+						{{ errors.document_id[0] }}
+					</div>
 				</div>
-				<div class="modal-body">
-					<form @submit.prevent="storeUser">
-						<div class="mb-3">
-							<label for="role" class="form-label">Roles</label>
-							<select name="role" id="role" v-model="user.role">
-								<option value="">Seleccionar</option>
-								<option v-for="role in roles" :value="role">{{ role }}</option>
-							</select>
-							<div class="alert alert-danger" v-if="errors && errors.role">
-								{{ errors.role[0] }}
-							</div>
-						</div>
-
-						<div class="mb-3">
-							<label for="document_id" class="form-label">Documento</label>
-							<input
-								type="text"
-								class="form-control"
-								id="document_id"
-								v-model="user.document_id"
-							/>
-							<div class="alert alert-danger" v-if="errors && errors.document_id">
-								{{ errors.document_id[0] }}
-							</div>
-						</div>
-						<div class="mb-3">
-							<label for="name" class="form-label">Nombre</label>
-							<input type="text" class="form-control" id="name" v-model="user.name" />
-							<div class="alert alert-danger" v-if="errors && errors.name">
-								{{ errors.name[0] }}
-							</div>
-						</div>
-						<div class="mb-3">
-							<label for="last_name" class="form-label">Apellido</label>
-							<input
-								type="text"
-								class="form-control"
-								id="last_name"
-								v-model="user.last_name"
-							/>
-							<div class="alert alert-danger" v-if="errors && errors.last_name">
-								{{ errors.last_name[0] }}
-							</div>
-						</div>
-						<div class="mb-3">
-							<label for="email" class="form-label">email</label>
-							<input
-								type="email"
-								class="form-control"
-								id="email"
-								v-model="user.email"
-							/>
-							<div class="alert alert-danger" v-if="errors && errors.email">
-								{{ errors.email[0] }}
-							</div>
-						</div>
-						<div class="mb-3">
-							<label for="address" class="form-label">Direccion</label>
-							<input
-								type="text"
-								class="form-control"
-								id="address"
-								v-model="user.address"
-							/>
-							<div class="alert alert-danger" v-if="errors && errors.address">
-								{{ errors.address[0] }}
-							</div>
-						</div>
-						<div class="mb-3">
-							<label for="password" class="form-label">Contraseña</label>
-							<input
-								type="password"
-								class="form-control"
-								id="password"
-								v-model="user.password"
-							/>
-							<div class="alert alert-danger" v-if="errors && errors.password">
-								{{ errors.password[0] }}
-							</div>
-						</div>
-						<div class="mb-3">
-							<label for="password_confirmation" class="form-label"
-								>Repetir Contraseña</label
-							>
-							<input
-								type="password"
-								class="form-control"
-								id="password_confirmation"
-								v-model="user.password_confirmation"
-							/>
-						</div>
-						<hr />
-						<section class="d-flex justify-content-end">
-							<button
-								type="button"
-								class="btn btn-secondary me-1"
-								data-bs-dismiss="modal"
-							>
-								Cerrar
-							</button>
-							<button type="submit" class="btn btn-primary me-1">
-								{{ `${is_create ? 'Crear' : 'Actualizar'} Usuario` }}
-							</button>
-						</section>
-					</form>
+				<div class="form-group">
+					<label for="name">Nombre</label>
+					<input type="text" class="form-control" id="name" v-model="user.name" />
+					<div class="text-danger" v-if="errors && errors.name">
+						{{ errors.name[0] }}
+					</div>
 				</div>
-			</div>
+				<div class="form-group">
+					<label for="last_name">Apellido</label>
+					<input
+						type="text"
+						class="form-control"
+						id="last_name"
+						v-model="user.last_name"
+					/>
+					<div class="text-danger" v-if="errors && errors.last_name">
+						{{ errors.last_name[0] }}
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input type="email" class="form-control" id="email" v-model="user.email" />
+					<div class="text-danger" v-if="errors && errors.email">
+						{{ errors.email[0] }}
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="address">Dirección</label>
+					<input type="text" class="form-control" id="address" v-model="user.address" />
+					<div class="text-danger" v-if="errors && errors.address">
+						{{ errors.address[0] }}
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="password">Contraseña</label>
+					<input
+						type="password"
+						class="form-control"
+						id="password"
+						v-model="user.password"
+					/>
+					<div class="text-danger" v-if="errors && errors.password">
+						{{ errors.password[0] }}
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="password_confirmation">Confirmar Contraseña</label>
+					<input
+						type="password"
+						class="form-control"
+						id="password_confirmation"
+						v-model="user.password_confirmation"
+					/>
+				</div>
+				<button type="submit" style="background-color: #ff5722" class="btn btn-primary">
+					Crear
+				</button>
+			</form>
 		</div>
-	</div>
+	</section>
 </template>
 
 <script>
-	import Swal from 'sweetalert2'
+	import axios from 'axios'
 
 	export default {
-		props: ['user_data'],
 		data() {
 			return {
-				is_create: true,
-				user: {},
-				roles: ['customer'],
+				user: {
+					name: '',
+					email: '',
+					password: '',
+					password_confirmation: ''
+				},
 				errors: {}
 			}
 		},
-		created() {
-			this.index()
-		},
 		methods: {
-			index() {},
 			async storeUser() {
 				try {
-					if (this.is_create) {
-						await axios.post('Users/SaveUser', this.user)
-					} else {
-						await axios.put(`Users/UpdateUser/${this.user.id}`, this.user)
-					}
-					Swal.fire({
+					this.user.role = 2
+					await axios.post('Users/SaveUser', this.user)
+					// Acciones después de crear el usuario
+					swal.fire({
 						icon: 'success',
-						title: 'Felicidades',
-						text: 'Usuario Creado'
+						title: '¡Felicidades!',
+						text: 'Usuario creado exitosamente.'
 					})
+					// Limpiar el formulario
+					this.user = {
+						name: '',
+						email: '',
+						password: '',
+						password_confirmation: ''
+					}
 				} catch (error) {
 					console.error(error)
-					if (error.response && error.response.status === 422) {
+					if (error.response && error.response.status == 422) {
+						console.log(error.response.data)
 						this.errors = error.response.data.errors
 					}
 				}

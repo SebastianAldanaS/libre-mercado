@@ -1,6 +1,6 @@
 <x-app>
     <section class="container">
-        <users-list />
+        <category-list />
     </section>
 
 </x-app>

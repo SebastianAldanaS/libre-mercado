@@ -7,7 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 
 // Usuarios
-Route::group(['prefix' => 'Users', 'controller' => UserController::class], function () {
+Route::group(['prefix' => 'Users', 'middleware' => ['auth', 'role:admin'], 'controller' => UserController::class], function () {
 
 	Route::get('/GetAllUsers', 'getAllUsers')->name('users'); //	mostrar todos los usuarios
 	Route::get('/GetAnUser/{user}', 'getAnUser'); // mostrar un usuario por id
@@ -38,7 +38,8 @@ Route::group(['prefix' => 'Products', 'controller' => ProductController::class],
 // Categories
 Route::group(['prefix' => 'Categories', 'controller' => CategoryController::class], function () {
 
-	Route::get('/GetAllCategories', 'getAllCategories');
+	Route::get('/GetAllCategories', 'getAllCategories')->name('categories');
+
 
 });
 
@@ -46,5 +47,10 @@ Route::group(['prefix' => 'Categories', 'controller' => CategoryController::clas
 Route::group(['prefix' => 'Cars', 'controller' => CarController::class], function () {
 
 	Route::post('/CreateCar', 'createCar'); //crear carrito
+	Route::get('/GetAllCarsByUser/{user}', 'getAllCarsByUser');
+	Route::delete('/DeleteCarProduct/{carId}', 'deleteCarProduct');
+	Route::put('/UpdateCarQuantity/{carId}', 'updateCarQuantity');
+
+
 
 });
